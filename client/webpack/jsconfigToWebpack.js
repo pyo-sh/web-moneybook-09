@@ -7,19 +7,19 @@ const path = require("path");
  */
 
 module.exports = function getWebpackAliasFromJsconfig(jsConfigPaths) {
-  const alias = Object.keys(jsConfigPaths).reduce((currentAlias, pathKey) => {
-    const [aliasKey] = pathKey.split("/");
-    const [pathAtJsConfig] = jsConfigPaths[pathKey];
+    const alias = Object.keys(jsConfigPaths).reduce((currentAlias, pathKey) => {
+        const [aliasKey] = pathKey.split("/");
+        const [pathAtJsConfig] = jsConfigPaths[pathKey];
 
-    const [relativePathToDir] = pathAtJsConfig.split("/*");
+        const [relativePathToDir] = pathAtJsConfig.split("/*");
 
-    const absolutePath = path.resolve(__dirname, relativePathToDir);
+        const absolutePath = path.resolve(__dirname, relativePathToDir);
 
-    return {
-      ...currentAlias,
-      [aliasKey]: absolutePath,
-    };
-  }, {});
+        return {
+            ...currentAlias,
+            [aliasKey]: absolutePath,
+        };
+    }, {});
 
-  return alias;
+    return alias;
 };
