@@ -1,21 +1,20 @@
 {
   "name": "web-moneybook-09",
-  "version": "1.0.0",
-  "description": "웹 9조 금교영 &amp; 표석훈 - 가계부",
-  "main": "index.js",
+  "version": "0.0.0",
+  "private": true,
   "scripts": {
-    "dev":"",
-    "build": ""
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/woowa-techcamp-2022/web-moneybook-09.git"
+  "dependencies": {
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "morgan": "~1.9.1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/woowa-techcamp-2022/web-moneybook-09/issues"
-  },
-  "homepage": "https://github.com/woowa-techcamp-2022/web-moneybook-09#readme"
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
 }
