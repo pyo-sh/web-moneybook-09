@@ -1,0 +1,21 @@
+{
+  "name": "web-moneybook-09",
+  "version": "1.0.0",
+  "description": "웹 9조 금교영 &amp; 표석훈 - 가계부",
+  "main": "index.js",
+  "scripts": {
+    "dev":"",
+    "build": ""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/woowa-techcamp-2022/web-moneybook-09.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/woowa-techcamp-2022/web-moneybook-09/issues"
+  },
+  "homepage": "https://github.com/woowa-techcamp-2022/web-moneybook-09#readme"
+}
