@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "checkJs": false,
+        "baseUrl": "./src",
+        "paths": {
+            "@src/*": ["./*"]
+        },
+        "moduleResolution": "node"
+    },
+    "exclude": ["node_modules"]
+}
