@@ -8,6 +8,8 @@ export default class Component {
         this.props = props;
 
         this._render();
+
+        return this.element;
     }
 
     initState() {
@@ -22,7 +24,13 @@ export default class Component {
     }
     _render() {
         this.beforeRender();
-        this.element = this.render();
+
+        const newElement = this.render();
+        if (this?.element) {
+            this.element.replaceWith(newElement);
+        }
+        this.element = newElement;
+
         this.afterRender();
     }
 }
