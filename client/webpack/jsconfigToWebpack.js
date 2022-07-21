@@ -3,18 +3,18 @@ const path = require("path");
 /**
  * To get alias for webpack `resolve.alias` value from `paths` at jsconfig.json `compilerOptions`
  *
- * @param {object} jsConfigPaths value of `jsConfig.compilerOptions.paths` from jsconfig.json
+ * @param {object} compilerOptions value of `jsConfig.compilerOptions` from jsconfig.json
  */
 
-module.exports = function getWebpackAliasFromJsconfig(jsConfigPaths) {
-    const alias = Object.keys(jsConfigPaths).reduce((currentAlias, pathKey) => {
+module.exports = function getWebpackAliasFromJsconfig({ paths, baseUrl }, clientPath) {
+    const alias = Object.keys(paths).reduce((currentAlias, pathKey) => {
         const [aliasKey] = pathKey.split("/");
-        const [pathAtJsConfig] = jsConfigPaths[pathKey];
+        const [pathAtJsConfig] = paths[pathKey];
 
         const [relativePathToDir] = pathAtJsConfig.split("/*");
 
-        const absolutePath = path.resolve(__dirname, relativePathToDir);
-
+        const absolutePath = path.join(clientPath, baseUrl || "", relativePathToDir);
+        console.log(absolutePath);
         return {
             ...currentAlias,
             [aliasKey]: absolutePath,

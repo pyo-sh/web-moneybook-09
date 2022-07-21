@@ -2,9 +2,8 @@ const Path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const getWebpackAliasFromJsconfig = require("./jsconfigToWebpack");
 const jsConfig = require("../jsconfig.json");
-const alias = getWebpackAliasFromJsconfig(jsConfig.compilerOptions.paths);
-
 const clientPath = Path.resolve(__dirname, "../");
+const alias = getWebpackAliasFromJsconfig(jsConfig.compilerOptions, clientPath);
 
 module.exports = {
     entry: {
