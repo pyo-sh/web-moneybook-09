@@ -3,7 +3,13 @@
         "checkJs": false,
         "baseUrl": "./src",
         "paths": {
-            "@src/*": ["./*"]
+            "@src/*": ["./*"],
+            "@apis/*": ["./apis/*"],
+            "@components/*": ["./components/*"],
+            "@core/*": ["./core/*"],
+            "@pages/*": ["./pages/*"],
+            "@store/*": ["./store/*"],
+            "@utils/*": ["./utils/*"]
         },
         "moduleResolution": "node"
     },
