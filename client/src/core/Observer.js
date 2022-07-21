@@ -1,4 +1,4 @@
-export default { makeObservable, subscribe } = (function () {
+export const { makeObservable, subscribe } = (function () {
     const observerMap = new Map();
 
     function makeObservable(state) {
@@ -8,11 +8,11 @@ export default { makeObservable, subscribe } = (function () {
                 const isChange = target[property] !== value;
 
                 if (!(handlerSet && isChange)) {
-                    return false;
+                    return true;
                 }
 
                 handlerSet.forEach((handler) => handler());
-                target[property] = value;
+                Reflect.set(...arguments);
                 return true;
             },
         });
