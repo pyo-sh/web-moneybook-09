@@ -1,4 +1,4 @@
-import { isElement, isNode, isString, isObject } from "@utils/validation.js";
+import { isElement, isNode, isString, isObject, isComponent } from "@utils/validation";
 
 const createDom = (tagName) => {
     const element = document.createElement(tagName);
@@ -11,6 +11,9 @@ const createDom = (tagName) => {
                 }
                 if (isElement(child) || isNode(child)) {
                     element.appendChild(child);
+                }
+                if (isComponent(child) && child.element) {
+                    element.appendChild(child.element);
                 }
             });
             return element;
@@ -40,7 +43,7 @@ const createDom = (tagName) => {
     };
 };
 
-export default new Proxy(
+const proxyCreateDom = new Proxy(
     {},
     {
         get(target, property) {
@@ -55,3 +58,118 @@ export default new Proxy(
         },
     },
 );
+
+export const {
+    a,
+    abbr,
+    acronym,
+    address,
+    applet,
+    area,
+    article,
+    aside,
+    audio,
+    b,
+    base,
+    basefont,
+    bdi,
+    bdo,
+    big,
+    blockquote,
+    body,
+    br,
+    button,
+    canvas,
+    caption,
+    center,
+    cite,
+    code,
+    col,
+    colgroup,
+    data,
+    datalist,
+    dd,
+    del,
+    details,
+    dfn,
+    dialog,
+    div,
+    dl,
+    dt,
+    em,
+    embed,
+    fieldset,
+    figcaption,
+    figure,
+    footer,
+    form,
+    h1,
+    head,
+    header,
+    hr,
+    html,
+    i,
+    iframe,
+    img,
+    input,
+    ins,
+    kbd,
+    label,
+    legend,
+    li,
+    link,
+    main,
+    map,
+    mark,
+    meta,
+    meter,
+    nav,
+    noscript,
+    object,
+    ol,
+    optgroup,
+    option,
+    output,
+    p,
+    param,
+    picture,
+    pre,
+    progress,
+    q,
+    rp,
+    rt,
+    ruby,
+    s,
+    samp,
+    script,
+    section,
+    select,
+    small,
+    source,
+    span,
+    strong,
+    style,
+    sub,
+    summary,
+    sup,
+    svg,
+    table,
+    tbody,
+    td,
+    template,
+    textarea,
+    tfoot,
+    th,
+    thead,
+    time,
+    title,
+    tr,
+    track,
+    tt,
+    u,
+    ul,
+    video,
+    wbr,
+} = proxyCreateDom;
+
+export default proxyCreateDom;
