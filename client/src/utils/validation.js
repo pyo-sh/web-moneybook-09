@@ -25,3 +25,7 @@ export const isComponent = (arg) => {
 export const isNumber = (arg) => {
     return typeof arg === "number";
 };
+
+export const isInDocument = (element) => {
+    return document.body.contains(element);
+};

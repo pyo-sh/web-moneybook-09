@@ -12,7 +12,10 @@ export const { makeObservable, subscribe } = (function () {
                 }
 
                 Reflect.set(...arguments);
-                handlerSet.forEach((handler) => handler());
+                handlerSet.forEach((handler) => {
+                    const isSuccess = handler();
+                    if (!isSuccess) handlerSet.delete(handler);
+                });
                 return true;
             },
         });

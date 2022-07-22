@@ -1,4 +1,5 @@
 import { makeObservable, subscribe } from "@core/Observer";
+import { isInDocument } from "@utils/validation";
 import { div } from "@core/CreateDom";
 
 export default class Component {
@@ -23,14 +24,18 @@ export default class Component {
         return div();
     }
     _render() {
+        if (this?.element && !isInDocument(this.element)) {
+            return false;
+        }
         this.beforeRender();
 
         const newElement = this.render();
-        if (this?.element) {
+        if (this.element) {
             this.element.replaceWith(newElement);
         }
         this.element = newElement;
 
         this.afterRender();
+        return true;
     }
 }
