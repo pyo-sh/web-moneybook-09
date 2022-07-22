@@ -17,6 +17,7 @@
     "rules": {
       "prefer-template":"error",
       "no-unused-vars":["error",{"args": "none"}],
-      "semi": 2
+      "semi": 2,
+      "curly": "error"
     }
   }
