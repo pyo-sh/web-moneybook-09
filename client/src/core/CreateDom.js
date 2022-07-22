@@ -1,9 +1,8 @@
 import { isElement, isNode, isString, isObject, isComponent } from "@utils/validation";
 
 const createDom = (tagName) => {
-    const element = document.createElement(tagName);
-
     return (...args) => {
+        const element = document.createElement(tagName);
         const appendChildren = (...children) => {
             children.forEach((child) => {
                 if (isString(child)) {
