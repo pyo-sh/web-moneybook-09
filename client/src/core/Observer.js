@@ -11,8 +11,8 @@ export const { makeObservable, subscribe } = (function () {
                     return true;
                 }
 
-                handlerSet.forEach((handler) => handler());
                 Reflect.set(...arguments);
+                handlerSet.forEach((handler) => handler());
                 return true;
             },
         });
