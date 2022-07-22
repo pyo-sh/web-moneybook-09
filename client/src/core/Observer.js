@@ -2,21 +2,23 @@ export const { makeObservable, subscribe } = (function () {
     const observerMap = new Map();
 
     function makeObservable(state) {
-        const observable = new Proxy(state, {
-            set(target, property, value) {
-                const handlerSet = observerMap.get(observable);
+        return new Proxy(state, {
+            set(target, property, value, receiver) {
+                const handlerSet = observerMap.get(receiver);
                 const isChange = target[property] !== value;
 
                 if (!(handlerSet && isChange)) {
                     return true;
                 }
 
-                handlerSet.forEach((handler) => handler());
                 Reflect.set(...arguments);
+                handlerSet.forEach((handler) => {
+                    const isSuccess = handler();
+                    if (!isSuccess) handlerSet.delete(handler);
+                });
                 return true;
             },
         });
-        return observable;
     }
 
     function subscribe(state, handler) {

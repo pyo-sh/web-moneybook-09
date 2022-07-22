@@ -21,3 +21,11 @@ export const isComponent = (arg) => {
     if (!arg) return false;
     return arg instanceof Component;
 };
+
+export const isNumber = (arg) => {
+    return typeof arg === "number";
+};
+
+export const isInDocument = (element) => {
+    return document.body.contains(element);
+};
