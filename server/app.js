@@ -3,6 +3,8 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+require("dotenv").config();
+require("./db/loader");
 
 const app = express();
 
@@ -11,6 +13,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+// app.use("/api");
 
 app.use("*", function (req, res, next) {
     // frontend에서 spa 구현을 위한 설정
