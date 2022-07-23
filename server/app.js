@@ -13,6 +13,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("*", function (req, res, next) {
+    // frontend에서 spa 구현을 위한 설정
     const PAGES = ["", "calendar", "statistic"];
     const { baseUrl } = req;
     const page = baseUrl.split("/")[1] || "";
