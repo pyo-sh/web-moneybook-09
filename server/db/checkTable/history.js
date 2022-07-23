@@ -6,7 +6,7 @@ const checkHistoryTable = (pool) => {
             `
             CREATE TABLE IF NOT EXISTS history  (
                 id INT PRIMARY KEY AUTO_INCREMENT,
-                date TIMESTAMP,
+                date DATE,
                 is_income BOOLEAN,
                 category INT,
                 payment_method INT,  
