@@ -1,8 +1,8 @@
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
 
-export default class Main extends Component {
+export default class Account extends Component {
     render() {
-        return div("Main");
+        return div("Account");
     }
 }
