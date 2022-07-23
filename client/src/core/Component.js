@@ -1,11 +1,11 @@
-import { makeObservable, subscribe } from "@core/Observer";
+import { PROXY_SYMBOL, makeObservable, subscribe } from "@core/Observer";
 import { isInDocument } from "@utils/validation";
 import { div } from "@core/CreateDom";
 
 export default class Component {
     constructor(props) {
         this.state = makeObservable(this.initState());
-        subscribe(this.state, this._render.bind(this));
+        this._subscribeState(this.state, ...this.bindState());
         this.props = props;
 
         this._render();
@@ -15,6 +15,17 @@ export default class Component {
 
     initState() {
         return {};
+    }
+    bindState() {
+        return [];
+    }
+    _subscribeState(...args) {
+        const bindedRender = this._render.bind(this);
+        args.forEach((state) => {
+            if (state.prototype === PROXY_SYMBOL) {
+                subscribe(state, bindedRender);
+            }
+        });
     }
 
     beforeRender() {}
