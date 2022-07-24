@@ -14,7 +14,7 @@ const formatPropertyToSnake = (object) => {
 };
 
 const formatPropertyToCamel = (object) => {
-    return Object.entries(obejct).reduce((newObject, [key, value]) => {
+    return Object.entries(object).reduce((newObject, [key, value]) => {
         const camelKey = snakeToCamel(key);
         newObject[camelKey] = value;
         return newObject;

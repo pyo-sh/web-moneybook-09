@@ -24,7 +24,9 @@ app.use("*", function (req, res, next) {
     if (PAGES.includes(page)) {
         const publicPath = path.resolve(__dirname, "public", "index.html");
         res.sendFile(publicPath);
-    } else next(createError(404));
+    } else {
+        next(createError(404));
+    }
 });
 
 // catch 404 and forward to error handler

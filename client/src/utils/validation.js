@@ -13,12 +13,16 @@ export const isString = (arg) => {
 };
 
 export const isObject = (arg) => {
-    if (!arg) return false;
+    if (!arg) {
+        return false;
+    }
     return Object.getPrototypeOf(arg) === Object.prototype;
 };
 
 export const isComponent = (arg) => {
-    if (!arg) return false;
+    if (!arg) {
+        return false;
+    }
     return arg instanceof Component;
 };
 

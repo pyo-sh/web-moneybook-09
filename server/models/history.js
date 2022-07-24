@@ -25,7 +25,7 @@ module.exports = (function HistoryModel() {
             WHERE date
             BETWEEN '${startDate}' AND '${endDate}'
         `;
-        const [rows] = await pool.execute(query, values);
+        const [rows] = await pool.execute(query);
         return rows;
     }
 
