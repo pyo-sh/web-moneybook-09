@@ -3,13 +3,14 @@
         "checkJs": false,
         "baseUrl": "./src",
         "paths": {
-            "@src/*": ["./*"],
             "@apis/*": ["./apis/*"],
             "@components/*": ["./components/*"],
             "@core/*": ["./core/*"],
+            "@icons/*": ["./icons/*"],
             "@pages/*": ["./pages/*"],
             "@store/*": ["./store/*"],
-            "@utils/*": ["./utils/*"]
+            "@utils/*": ["./utils/*"],
+            "@src/*": ["./*"]
         },
         "moduleResolution": "node"
     },
