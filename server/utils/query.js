@@ -10,7 +10,8 @@ const objectToQuerySet = (obj) => {
     const entries = Object.entries(obj);
     return entries
         .reduce((set, [key, value]) => {
-            if (value) set.push(`${key} = "${value}"`);
+            if (typeof value === "boolean") value = parseInt(value);
+            set.push(`${key} = "${value}"`);
             return set;
         }, [])
         .join(",");
@@ -24,7 +25,7 @@ const objectToQuerySet = (obj) => {
  */
 const hasColumnProperty = (columns, data) => {
     const keys = Object.keys(data);
-    return keys.some((key) => !columns.includes(key));
+    return keys.every((key) => columns.includes(key));
 };
 
 const getCreateQuery = ({ tableName, columns }, data) => {
@@ -49,7 +50,7 @@ const getUpdateQuery = ({ tableName, columns }, id, data) => {
     `;
 };
 
-const getDeleteQuery = ({ tableName, columns }, id) => {
+const getDeleteQuery = ({ tableName }, id) => {
     if (typeof id !== "number") throw Error(`Delete Query : ${ID_ERROR}`);
 
     return `
