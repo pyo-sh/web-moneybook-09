@@ -10,7 +10,9 @@ const objectToQuerySet = (obj) => {
     const entries = Object.entries(obj);
     return entries
         .reduce((set, [key, value]) => {
-            if (typeof value === "boolean") value = parseInt(value);
+            if (typeof value === "boolean") {
+                value = parseInt(value);
+            }
             set.push(`${key} = "${value}"`);
             return set;
         }, [])
@@ -29,7 +31,9 @@ const hasColumnProperty = (columns, data) => {
 };
 
 const getCreateQuery = ({ tableName, columns }, data) => {
-    if (!hasColumnProperty(columns, data)) throw Error(`Create Query : ${PROPERTY_ERROR}`);
+    if (!hasColumnProperty(columns, data)) {
+        throw Error(`Create Query : ${PROPERTY_ERROR}`);
+    }
 
     const querySet = objectToQuerySet(data);
     return `
@@ -40,7 +44,9 @@ const getCreateQuery = ({ tableName, columns }, data) => {
 };
 
 const getUpdateQuery = ({ tableName, columns }, id, data) => {
-    if (!hasColumnProperty(columns, data)) throw Error(`Update Query : ${PROPERTY_ERROR}`);
+    if (!hasColumnProperty(columns, data)) {
+        throw Error(`Update Query : ${PROPERTY_ERROR}`);
+    }
 
     const querySet = objectToQuerySet(data);
     return `
@@ -51,7 +57,9 @@ const getUpdateQuery = ({ tableName, columns }, id, data) => {
 };
 
 const getDeleteQuery = ({ tableName }, id) => {
-    if (typeof id !== "number") throw Error(`Delete Query : ${ID_ERROR}`);
+    if (typeof id !== "number") {
+        throw Error(`Delete Query : ${ID_ERROR}`);
+    }
 
     return `
         DELETE

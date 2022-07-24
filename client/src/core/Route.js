@@ -30,8 +30,12 @@ window.onpopstate = () => Route.navigate();
  * @returns HTMLElement | null
  */
 export const Routes = ({ Component, path }) => {
-    if (!Component) return null;
-    if (`/${pageState.page}` === path) return new Component();
+    if (!Component) {
+        return null;
+    }
+    if (`/${pageState.page}` === path) {
+        return new Component();
+    }
     return null;
 };
 

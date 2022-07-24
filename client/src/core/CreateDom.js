@@ -47,7 +47,9 @@ const proxyCreateDom = new Proxy(
     {
         get(target, property) {
             property = property.toLowerCase();
-            if (property in target) return Reflect.get(...arguments);
+            if (property in target) {
+                return Reflect.get(...arguments);
+            }
 
             Reflect.set(target, property, createDom(property));
             return Reflect.get(...arguments);
