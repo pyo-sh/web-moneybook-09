@@ -1,4 +1,4 @@
-import { svgDomCreator } from "@utils/svgDomCreator";
+import svgDomCreator from "@utils/svgDomCreator";
 
 const downArrowIcon = (color = "#8D9393", width = 16, height = 17) => {
     return svgDomCreator(`

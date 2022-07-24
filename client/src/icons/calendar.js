@@ -1,4 +1,4 @@
-import { svgDomCreator } from "@utils/svgDomCreator";
+import svgDomCreator from "@utils/svgDomCreator";
 
 const calendarIcon = (color = "#222222", width = 24, height = 24) => {
     return svgDomCreator(`
