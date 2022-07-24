@@ -116,6 +116,18 @@ ul {
     list-style: none;
 }
 
+button {
+    border: none;
+    outline: none;
+    background: transparent;
+    cursor: pointer;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
 body {
     width: 100vw;
     height: 100vh;
@@ -126,15 +138,15 @@ body {
     height: 100%;
 }
 
-.text_display_Large {
-    font-family: "Do Hyeon";
+.text_display_large {
+    font-family: "BMDOHYEON";
     font-style: normal;
     font-weight: 400;
     font-size: 48px;
     line-height: 56px;
 }
 .text_display_small {
-    font-family: "Do Hyeon";
+    font-family: "BMDOHYEON";
     font-style: normal;
     font-weight: 400;
     font-size: 24px;
