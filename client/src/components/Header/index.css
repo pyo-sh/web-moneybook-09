@@ -17,7 +17,7 @@
 
 .header .wrapper {
     width: 100%;
-    min-width: 525px;
+    min-width: 580px;
     max-width: 856px;
     height: 100%;
     padding: 0 24px 24px;
@@ -32,10 +32,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    column-gap: 50px;
 }
 .header .controller > article {
+    width: 170px;
+
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,4 +50,18 @@
 }
 .header .monthMover:last-child > svg {
     transform: rotate(270deg);
+}
+
+.header .pageTabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.header .pageTabs > a {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

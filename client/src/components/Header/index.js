@@ -35,7 +35,7 @@ export default class Header extends Component {
                     ),
                     button({ class: "monthMover" })(downArrowIcon(WHITE, 24, 24)),
                 ),
-                section(
+                section({ class: "pageTabs" })(
                     a({ href: "/" })(fileTextIcon(WHITE)),
                     a({ href: "/calendar" })(calendarIcon(WHITE)),
                     a({ href: "/statistic" })(chartIcon(WHITE)),
