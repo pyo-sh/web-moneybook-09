@@ -8,16 +8,17 @@ export const pageList = new Map();
 
 const Route = {
     navigate(page) {
-        if (!page) {
+        if (typeof page !== "string") {
             pageState.page = getPageFromPath(window.location.pathname);
             return;
         }
 
-        if (pageState !== page) {
-            history.pushState(null, null, page);
+        const pathName = `/${page}`;
+        if (pageState.page !== page) {
+            history.pushState(null, null, pathName);
             pageState.page = page;
         } else {
-            history.replaceState(null, null, page);
+            history.replaceState(null, null, pathName);
         }
     },
 };
