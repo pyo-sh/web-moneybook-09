@@ -1,7 +1,6 @@
 const pool = require("../db/loader");
 const { getCreateQuery, getUpdateQuery, getDeleteQuery } = require("../utils/query");
-const { getNextMonth, getMonthDate } = require("../utils/time");
-const { formatPropertyToSnake, formatPropertyToCamel } = require("../utils/time");
+const { formatPropertyToSnake } = require("../utils/format");
 
 // TODO
 module.exports = (function HistoryModel() {
@@ -24,7 +23,7 @@ module.exports = (function HistoryModel() {
             SELECT *
             FROM history
             WHERE date
-            BETWEEN '${startMonth}' AND '${endMonth}'
+            BETWEEN '${startDate}' AND '${endDate}'
         `;
         const [rows] = await pool.execute(query, values);
         return rows;
