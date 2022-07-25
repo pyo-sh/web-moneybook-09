@@ -30,8 +30,7 @@ module.exports = (function HistoryModel() {
         const query = `
             SELECT *
             FROM ${TABLE_NAME}
-            WHERE date
-            BETWEEN '${startDate}' AND '${endDate}'
+            WHERE '${startDate}' <= date AND date < '${endDate}'
         `;
         const [rows] = await pool.execute(query);
         return rows;
@@ -73,7 +72,7 @@ module.exports = (function HistoryModel() {
                 INNER JOIN category AS c
                 ON h.category = c.id
             WHERE h.category = ${categoryId} AND 
-                h.date BETWEEN '${startDate}' AND '${endDate}'
+                '${startDate}' <= date AND date < '${endDate}'
             GROUP BY ${DATE_FORMAT}
             ORDER BY ${DATE_FORMAT}
         `;

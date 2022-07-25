@@ -27,7 +27,7 @@ function getYearDates(startString, endString) {
     const startDate = new Date(startString);
     const endDate = new Date(endString);
     const yearDates = {};
-    for (; startDate <= endDate; startDate.setMonth(startDate.getMonth() + 1)) {
+    for (; startDate < endDate; startDate.setMonth(startDate.getMonth() + 1)) {
         const year = startDate.getFullYear().toString();
         const month = (startDate.getMonth() + 1).toString().padStart(2, "0");
         const key = `${year}.${month}`;
