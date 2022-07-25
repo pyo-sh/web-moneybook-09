@@ -1,8 +1,18 @@
 import { div, input, label } from "@core/CreateDom";
 
-const FormInput = ({ ref, validate, format, key, placeholder, labelText, maxlength = 150 }) => {
+const FormInput = ({
+    ref,
+    validate,
+    format = (value) => value,
+    key,
+    placeholder,
+    labelText,
+    maxlength = 150,
+}) => {
     const setInputValue = ({ currentTarget }) => {
-        ref[key] = currentTarget.value;
+        ref[key] = format(currentTarget.value);
+        currentTarget.value = ref[key];
+        currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
         console.log(currentTarget.value);
     };
 
@@ -13,7 +23,7 @@ const FormInput = ({ ref, validate, format, key, placeholder, labelText, maxleng
                 maxlength,
                 class: "text_body_regular",
                 placeholder: placeholder,
-                value: ref[key] || "",
+                value: format(ref[key]) || "",
                 event: {
                     input: setInputValue,
                 },
