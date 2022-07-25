@@ -26,13 +26,10 @@ module.exports = (function PaymentMethodService() {
     async function editPaymentMethod(id, body) {
         const data = formatPropertyToSnake(body);
 
-        const isSuccess = await PaymentMethodModel.updateById({ id, data });
-        if (isSuccess) {
-            const paymentMethod = await PaymentMethodModel.findById({ id });
-            return formatPropertyToCamel(paymentMethod);
-        } else {
-            throw Error("Edit Category : Error on PaymentMethodModel.updateById");
-        }
+        await PaymentMethodModel.updateById({ id, data });
+
+        const paymentMethod = await PaymentMethodModel.findById({ id });
+        return formatPropertyToCamel(paymentMethod);
     }
 
     async function deletePaymentMethod(id) {

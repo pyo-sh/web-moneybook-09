@@ -34,17 +34,14 @@ module.exports = (function HistoryService() {
     async function editHistory(id, body) {
         const data = formatPropertyToSnake(body);
 
-        const isSuccess = await HistoryModel.updateById({ id, data });
-        if (isSuccess) {
-            const pureHistory = await HistoryModel.findById({ id });
-            const history = formatPropertyToCamel(pureHistory);
-            return {
-                ...history,
-                date: getFormatDate(history.date).replaceAll("-", "."),
-            };
-        } else {
-            throw Error("Edit History : Error on HistoryModel.updateById");
-        }
+        await HistoryModel.updateById({ id, data });
+
+        const pureHistory = await HistoryModel.findById({ id });
+        const history = formatPropertyToCamel(pureHistory);
+        return {
+            ...history,
+            date: getFormatDate(history.date).replaceAll("-", "."),
+        };
     }
 
     async function deleteHistory(id) {

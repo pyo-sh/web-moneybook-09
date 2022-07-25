@@ -5,6 +5,8 @@ const {
     getUpdateQuery,
     getDeleteQuery,
 } = require("../utils/query");
+const createError = require("http-errors");
+const { DB_NO_AFFECT_ERROR } = require("../utils/errorMessages");
 
 module.exports = (function HistoryModel() {
     const TABLE_NAME = "history";
@@ -52,10 +54,10 @@ module.exports = (function HistoryModel() {
 
         if (fields.affectedRows <= 0) {
             console.log(fields);
-            throw Error("Database Row didn't Affected");
+            throw createError.BadRequest(DB_NO_AFFECT_ERROR);
         }
 
-        return true;
+        return fields;
     }
 
     async function deleteById({ id }) {
@@ -63,7 +65,7 @@ module.exports = (function HistoryModel() {
         const [fields] = await pool.execute(query);
 
         if (fields.affectedRows <= 0) {
-            throw Error("Database Row didn't Affected");
+            throw createError.BadRequest(DB_NO_AFFECT_ERROR);
         }
 
         return id;

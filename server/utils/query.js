@@ -1,5 +1,5 @@
-const PROPERTY_ERROR = "Invalid Data Property";
-const ID_ERROR = "Invalid ID Type";
+const createError = require("http-errors");
+const { DB_QUERY_DATA_ERROR, DB_QUERY_ID_ERROR } = require("../utils/errorMessages");
 
 /**
  * Object를 테이블 데이터로 들고 있을 때 query string 으로 바꾸어주는 함수
@@ -32,7 +32,7 @@ const hasColumnProperty = (columns, data) => {
 
 const getCreateQuery = ({ tableName, columns }, data) => {
     if (!hasColumnProperty(columns, data)) {
-        throw Error(`Create Query : ${PROPERTY_ERROR}`);
+        throw createError.BadRequest(`생성 오류: ${DB_QUERY_DATA_ERROR}`);
     }
 
     const querySet = objectToQuerySet(data);
@@ -45,7 +45,7 @@ const getCreateQuery = ({ tableName, columns }, data) => {
 
 const getReadByIdQuery = ({ tableName }, id) => {
     if (isNaN(parseInt(id))) {
-        throw Error(`Read Query : ${ID_ERROR}`);
+        throw createError.BadRequest(`읽기 오류: ${DB_QUERY_ID_ERROR}`);
     }
 
     return `
@@ -57,7 +57,7 @@ const getReadByIdQuery = ({ tableName }, id) => {
 
 const getUpdateQuery = ({ tableName, columns }, id, data) => {
     if (!hasColumnProperty(columns, data)) {
-        throw Error(`Update Query : ${PROPERTY_ERROR}`);
+        throw createError.BadRequest(`수정 오류: ${DB_QUERY_DATA_ERROR}`);
     }
 
     const querySet = objectToQuerySet(data);
@@ -70,7 +70,7 @@ const getUpdateQuery = ({ tableName, columns }, id, data) => {
 
 const getDeleteQuery = ({ tableName }, id) => {
     if (isNaN(parseInt(id))) {
-        throw Error(`Delete Query : ${ID_ERROR}`);
+        throw createError.BadRequest(`삭제 오류: ${DB_QUERY_ID_ERROR}`);
     }
 
     return `
