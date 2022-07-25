@@ -13,7 +13,6 @@ const FormInput = ({
         ref[key] = format(currentTarget.value);
         currentTarget.value = ref[key];
         currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
-        console.log(currentTarget.value);
     };
 
     return div({ class: "inputBox" })(

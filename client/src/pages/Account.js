@@ -4,7 +4,6 @@ import Modal from "@components/Modal";
 import { div } from "@core/CreateDom";
 export default class Account extends Component {
     render() {
-        console.log("Account Render");
         // prettier-ignore
         return div(
                 new AccountForm(),

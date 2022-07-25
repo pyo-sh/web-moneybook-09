@@ -16,7 +16,6 @@ const AmountInput = ({ ref, state }) => {
         currentTarget.value = formatAmount(currentTarget.value); //문자열
         ref.amount = currentTarget.value.replace(/,/g, "");
         currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
-        console.log(ref.amount);
     };
 
     return div({ class: "inputBox" })(

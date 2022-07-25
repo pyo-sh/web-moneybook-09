@@ -43,7 +43,6 @@ export default class AccountForm extends Component {
     }
 
     validateAll() {
-        console.log("validate");
         const innerInputValues = { ...this.ref, isIncome: this.state.isIncome };
         const isNotChanged = compareObjects(innerInputValues, SelectedHistoryState);
 
