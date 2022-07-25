@@ -6,7 +6,7 @@ const snakeToCamel = (str) =>
 const camelToSnakeCase = (str) => str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`);
 
 const formatPropertyToSnake = (object) => {
-    Object.entries(object).reduce((newObject, [key, value]) => {
+    return Object.entries(object).reduce((newObject, [key, value]) => {
         const snakeKey = camelToSnakeCase(key);
         newObject[snakeKey] = value;
         return newObject;
