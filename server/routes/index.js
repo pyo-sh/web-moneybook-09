@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const categoryRouter = require("./category");
+const historyRouter = require("./history");
 
 router.use("/category", categoryRouter);
+router.use("/history", historyRouter);
 
 /* Error Controller */
 router.use(function (err, req, res, next) {
