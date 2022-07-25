@@ -1,7 +1,7 @@
 import "./modal.css";
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
-import { ModalState } from "@store/";
+import { modalState } from "@store/modalState";
 import CategoryDeleteForm from "./CategoryDeleteForm";
 import CategoryAddForm from "./CategoryAddForm";
 
@@ -12,11 +12,11 @@ const modalMap = {
 
 export default class Modal extends Component {
     bindState() {
-        return [ModalState];
+        return [modalState];
     }
 
     render() {
-        const { value, type } = ModalState;
+        const { value, type } = modalState;
 
         if (!type) {
             return div();

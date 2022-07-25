@@ -1,6 +1,6 @@
 import { div, button, span } from "@core/CreateDom";
 import { xIcon, downArrowIcon } from "@icons";
-import { ModalState } from "@store/";
+import { modalState } from "@store/modalState";
 
 const paymentMethods = ["현금", "체크카드", "현대카드"];
 
@@ -8,8 +8,8 @@ const PaymentDropdownPanel = ({ state, ref, paymentMethods }) => {
     const openModal = (type, value = null) => {
         return (e) => {
             e.stopPropagation();
-            ModalState.type = type;
-            ModalState.value = value;
+            modalState.type = type;
+            modalState.value = value;
         };
     };
 

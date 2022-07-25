@@ -1,5 +1,5 @@
 import { div, label, button, input, span } from "@core/CreateDom";
-import { formatAmount } from "./validation";
+import { formatAmount } from "./format";
 
 const AmountInput = ({ ref, state }) => {
     const toggleIsIncome = () => {

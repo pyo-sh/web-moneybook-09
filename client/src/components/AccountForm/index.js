@@ -6,8 +6,9 @@ import FormInput from "./FormInput";
 import CategoryDropdown from "./CategoryDropdown";
 import PaymentDropdown from "./paymentDropdown";
 import AmountInput from "./AmountInput";
-import { validateHistoryForm, validateDate, formatDate } from "./validation";
-import { SelectedHistoryState } from "@store/";
+import { validateHistoryForm, validateDate } from "./validation";
+import { formatDate } from "./format";
+import { historyState } from "@store/historyState";
 import { compareObjects } from "@utils/compareObject";
 
 // 내용 150;;
@@ -44,7 +45,7 @@ export default class AccountForm extends Component {
 
     validateAll() {
         const innerInputValues = { ...this.ref, isIncome: this.state.isIncome };
-        const isNotChanged = compareObjects(innerInputValues, SelectedHistoryState);
+        const isNotChanged = compareObjects(innerInputValues, historyState);
 
         if (isNotChanged) {
             return;
