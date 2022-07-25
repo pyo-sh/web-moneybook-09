@@ -5,7 +5,7 @@ const PaymentMethodService = require("../services/paymentMethod");
 router.get("/", async (req, res, next) => {
     try {
         const paymentMethods = await PaymentMethodService.getPaymentMethodAll();
-        return res.send(paymentMethods);
+        return res.send({ paymentMethods });
     } catch (e) {
         next(e);
     }

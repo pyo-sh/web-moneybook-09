@@ -38,7 +38,7 @@ router.get("/", async (req, res, next) => {
         const { date } = req.query;
 
         const histories = await HistoryService.getHistoryByMonth(date);
-        return res.send(histories);
+        return res.send({ histories });
     } catch (e) {
         next(e);
     }
@@ -48,8 +48,8 @@ router.get("/statistic", async (req, res, next) => {
     try {
         const { category: categoryId, date } = req.query;
 
-        const histories = await HistoryService.getHistoryRecentSum(categoryId, date);
-        return res.send(histories);
+        const statistics = await HistoryService.getHistoryRecentSum(categoryId, date);
+        return res.send({ statistics });
     } catch (e) {
         next(e);
     }
@@ -60,7 +60,7 @@ router.get("/expenditure", async (req, res, next) => {
         const { category: categoryId, date } = req.query;
 
         const histories = await HistoryService.getExpenditureByCategory(categoryId, date);
-        return res.send(histories);
+        return res.send({ histories });
     } catch (e) {
         next(e);
     }
