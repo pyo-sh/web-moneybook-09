@@ -43,6 +43,18 @@ const getCreateQuery = ({ tableName, columns }, data) => {
     `;
 };
 
+const getReadByIdQuery = ({ tableName }, id) => {
+    if (isNaN(parseInt(id))) {
+        throw Error(`Read Query : ${ID_ERROR}`);
+    }
+
+    return `
+        SELECT *
+        FROM ${tableName}
+        WHERE id = ${id}
+    `;
+};
+
 const getUpdateQuery = ({ tableName, columns }, id, data) => {
     if (!hasColumnProperty(columns, data)) {
         throw Error(`Update Query : ${PROPERTY_ERROR}`);
@@ -70,6 +82,7 @@ const getDeleteQuery = ({ tableName }, id) => {
 
 module.exports = {
     getCreateQuery,
+    getReadByIdQuery,
     getUpdateQuery,
     getDeleteQuery,
 };
