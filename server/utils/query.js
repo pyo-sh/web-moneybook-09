@@ -57,7 +57,7 @@ const getUpdateQuery = ({ tableName, columns }, id, data) => {
 };
 
 const getDeleteQuery = ({ tableName }, id) => {
-    if (typeof id !== "number") {
+    if (isNaN(parseInt(id))) {
         throw Error(`Delete Query : ${ID_ERROR}`);
     }
 
