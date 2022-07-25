@@ -20,4 +20,10 @@ router.patch("/:id", async (req, res) => {
     return res.send(data);
 });
 
+router.delete("/:id", async (req, res) => {
+    const { id } = req.params;
+    await CategoryService.deleteCategory(id);
+    return res.send({ message: "Successfully Deleted" });
+});
+
 module.exports = router;

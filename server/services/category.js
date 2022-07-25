@@ -14,7 +14,7 @@ module.exports = (function CategoryService() {
     }
 
     async function deleteCategory(id) {
-        return await CategoryModel.delete({ id });
+        return await CategoryModel.deleteById({ id });
     }
 
     return {
