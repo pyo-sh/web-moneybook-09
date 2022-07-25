@@ -13,4 +13,11 @@ router.post("/", async (req, res) => {
     return res.send(data);
 });
 
+router.patch("/:id", async (req, res) => {
+    const { id } = req.params;
+    const { body } = req;
+    const data = await CategoryService.editCategory(id, body);
+    return res.send(data);
+});
+
 module.exports = router;

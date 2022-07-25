@@ -31,10 +31,17 @@ module.exports = (function CategoryModel() {
     }
 
     async function updateById({ id, data }) {
+        const pureData = { ...data };
         data = formatPropertyToSnake(data);
         const query = getUpdateQuery(TABLE_INFO, id, data);
-        const [rows] = await pool.execute(query);
-        return rows[0];
+        const [fields] = await pool.execute(query);
+        if (fields.affectedRows <= 0) {
+            throw Error("Database Row didn't Affected");
+        }
+        return {
+            id,
+            ...pureData,
+        };
     }
 
     async function deleteById({ id }) {
