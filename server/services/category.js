@@ -6,10 +6,10 @@ module.exports = (function CategoryService() {
         const pureData = { ...body };
         const data = formatPropertyToSnake(body);
 
-        const dbResult = await CategoryModel.create({ data });
+        const id = await CategoryModel.create({ data });
         return {
             ...pureData,
-            ...dbResult,
+            id,
         };
     }
 
@@ -19,11 +19,15 @@ module.exports = (function CategoryService() {
     }
 
     async function editCategory(id, body) {
-        const pureData = { ...body };
         const data = formatPropertyToSnake(body);
 
-        await CategoryModel.updateById({ id, data });
-        return { ...pureData, id };
+        const isSuccess = await CategoryModel.updateById({ id, data });
+        if (isSuccess) {
+            const category = await CategoryModel.findById({ id });
+            return formatPropertyToCamel(category);
+        } else {
+            throw Error("Edit Category : Error on CategoryModel.updateById");
+        }
     }
 
     async function deleteCategory(id) {

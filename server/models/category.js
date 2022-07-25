@@ -1,5 +1,10 @@
 const pool = require("../db/loader");
-const { getCreateQuery, getUpdateQuery, getDeleteQuery } = require("../utils/query");
+const {
+    getCreateQuery,
+    getReadByIdQuery,
+    getUpdateQuery,
+    getDeleteQuery,
+} = require("../utils/query");
 
 module.exports = (function CategoryModel() {
     const TABLE_NAME = "category";
@@ -12,7 +17,13 @@ module.exports = (function CategoryModel() {
     async function create({ data }) {
         const query = getCreateQuery(TABLE_INFO, data);
         const [fields] = await pool.execute(query);
-        return { id: fields.insertId };
+        return fields.insertId;
+    }
+
+    async function findById({ id }) {
+        const query = getReadByIdQuery(TABLE_INFO, id);
+        const [rows] = await pool.execute(query);
+        return rows[0];
     }
 
     async function findAll() {
@@ -32,7 +43,7 @@ module.exports = (function CategoryModel() {
             throw Error("Database Row didn't Affected");
         }
 
-        return { id, ...data };
+        return true;
     }
 
     async function deleteById({ id }) {
@@ -46,5 +57,5 @@ module.exports = (function CategoryModel() {
         return id;
     }
 
-    return { create, findAll, updateById, deleteById };
+    return { create, findById, findAll, updateById, deleteById };
 })();
