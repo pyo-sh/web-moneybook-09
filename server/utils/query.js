@@ -11,7 +11,7 @@ const objectToQuerySet = (obj) => {
     return entries
         .reduce((set, [key, value]) => {
             if (typeof value === "boolean") {
-                value = parseInt(value);
+                value = Number(value);
             }
             set.push(`${key} = "${value}"`);
             return set;
@@ -43,6 +43,18 @@ const getCreateQuery = ({ tableName, columns }, data) => {
     `;
 };
 
+const getReadByIdQuery = ({ tableName }, id) => {
+    if (isNaN(parseInt(id))) {
+        throw Error(`Read Query : ${ID_ERROR}`);
+    }
+
+    return `
+        SELECT *
+        FROM ${tableName}
+        WHERE id = ${id}
+    `;
+};
+
 const getUpdateQuery = ({ tableName, columns }, id, data) => {
     if (!hasColumnProperty(columns, data)) {
         throw Error(`Update Query : ${PROPERTY_ERROR}`);
@@ -57,7 +69,7 @@ const getUpdateQuery = ({ tableName, columns }, id, data) => {
 };
 
 const getDeleteQuery = ({ tableName }, id) => {
-    if (typeof id !== "number") {
+    if (isNaN(parseInt(id))) {
         throw Error(`Delete Query : ${ID_ERROR}`);
     }
 
@@ -70,6 +82,7 @@ const getDeleteQuery = ({ tableName }, id) => {
 
 module.exports = {
     getCreateQuery,
+    getReadByIdQuery,
     getUpdateQuery,
     getDeleteQuery,
 };

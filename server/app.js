@@ -14,7 +14,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-// app.use("/api");
+const apiRouter = require("./routes");
+app.use("/api", apiRouter);
 
 app.use("*", function (req, res, next) {
     // frontend에서 spa 구현을 위한 설정
