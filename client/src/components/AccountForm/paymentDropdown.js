@@ -1,14 +1,15 @@
 import { div, button, span } from "@core/CreateDom";
 import { xIcon, downArrowIcon } from "@icons";
-import { modalType } from "@store/";
+import { ModalState } from "@store/";
 
 const paymentMethods = ["현금", "체크카드", "현대카드"];
 
 const PaymentDropdownPanel = ({ state, ref, paymentMethods }) => {
-    const openModal = (type) => {
+    const openModal = (type, value = null) => {
         return (e) => {
             e.stopPropagation();
-            modalType.value = type;
+            ModalState.type = type;
+            ModalState.value = value;
         };
     };
 
@@ -24,7 +25,7 @@ const PaymentDropdownPanel = ({ state, ref, paymentMethods }) => {
             div({
                 class: "panelItem",
                 event: { click: setPaymentMethod },
-            })(span(value), span({ event: { click: openModal("delete") } })(xIcon())),
+            })(span(value), span({ event: { click: openModal("delete", value) } })(xIcon())),
         );
     };
 

@@ -9,6 +9,7 @@ export const SelectedHistoryState = makeObservable({
     isIncome: null,
 });
 
-export const modalType = makeObservable({
+export const ModalState = makeObservable({
     value: null,
+    type: null,
 });
