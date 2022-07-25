@@ -1,5 +1,9 @@
 const PaymentMethodModel = require("../models/paymentMethod");
-const { formatPropertyToSnake, formatPropertyToCamel } = require("../utils/format");
+const {
+    formatPropertyToSnake,
+    formatPropertyToCamel,
+    formatObjectById,
+} = require("../utils/format");
 
 module.exports = (function PaymentMethodService() {
     async function addPaymentMethod(body) {
@@ -15,7 +19,8 @@ module.exports = (function PaymentMethodService() {
 
     async function getPaymentMethodAll() {
         const dbResults = await PaymentMethodModel.findAll();
-        return dbResults.map(formatPropertyToCamel);
+        const paymentMethods = dbResults.map(formatPropertyToCamel);
+        return formatObjectById(paymentMethods);
     }
 
     async function editPaymentMethod(id, body) {
@@ -23,8 +28,8 @@ module.exports = (function PaymentMethodService() {
 
         const isSuccess = await PaymentMethodModel.updateById({ id, data });
         if (isSuccess) {
-            const category = await PaymentMethodModel.findById({ id });
-            return formatPropertyToCamel(category);
+            const paymentMethod = await PaymentMethodModel.findById({ id });
+            return formatPropertyToCamel(paymentMethod);
         } else {
             throw Error("Edit Category : Error on PaymentMethodModel.updateById");
         }
