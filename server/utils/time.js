@@ -16,4 +16,24 @@ function getFormatDateByInterval(date, interval) {
     monthFirstDate.setMonth(monthFirstDate.getMonth() + interval);
     return getFormatDate(monthFirstDate);
 }
-module.exports = { getFormatDate, getFormatDateByInterval };
+
+/**
+ * { yyyy.mm: sums } 형태의 Object 구성을 위해 1년치 key 미리 설정
+ * @param {*} startString 시작 시간 yyyy-mm-dd 형식의 string
+ * @param {*} endString 끝 시간 yyyy-mm-dd 형식의 string
+ * @returns 1년치 { yyyy.mm: sums }
+ */
+function getYearDates(startString, endString) {
+    const startDate = new Date(startString);
+    const endDate = new Date(endString);
+    const yearDates = {};
+    for (; startDate <= endDate; startDate.setMonth(startDate.getMonth() + 1)) {
+        const year = startDate.getFullYear().toString();
+        const month = (startDate.getMonth() + 1).toString().padStart(2, "0");
+        const key = `${year}.${month}`;
+        yearDates[key] = 0;
+    }
+    return yearDates;
+}
+
+module.exports = { getFormatDate, getFormatDateByInterval, getYearDates };

@@ -19,7 +19,6 @@ router.patch("/:id", async (req, res, next) => {
         const data = await HistoryService.editHistory(id, body);
         return res.send(data);
     } catch (e) {
-        console.log(e);
         next(e);
     }
 });

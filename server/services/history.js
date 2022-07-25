@@ -4,7 +4,7 @@ const {
     formatPropertyToCamel,
     groupObjectByDate,
 } = require("../utils/format");
-const { getFormatDate, getFormatDateByInterval } = require("../utils/time");
+const { getFormatDate, getFormatDateByInterval, getYearDates } = require("../utils/time");
 
 module.exports = (function HistoryService() {
     async function addHistory(body) {
@@ -57,7 +57,13 @@ module.exports = (function HistoryService() {
         const startDate = getFormatDateByInterval(currentDate, -6);
         const endDate = getFormatDateByInterval(currentDate, 6);
 
-        return await HistoryModel.countAmountByMonth({ categoryId, startDate, endDate });
+        const dbResults = await HistoryModel.sumAmountsByMonth({ categoryId, startDate, endDate });
+        const yearSums = getYearDates(startDate, endDate);
+        const sums = dbResults.reduce((acc, { date, total }) => {
+            yearSums[date] = total;
+            return acc;
+        }, yearSums);
+        return sums;
     }
 
     return { addHistory, editHistory, deleteHistory, getHistoryByMonth, getHistoryRecentSum };

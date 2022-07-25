@@ -60,21 +60,27 @@ module.exports = (function HistoryModel() {
         return id;
     }
 
-    async function countAmountByMonth({ categoryId, startDate, endDate }) {
+    async function sumAmountsByMonth({ categoryId, startDate, endDate }) {
+        const DATE_FORMAT = `
+            CONCAT(
+                YEAR(h.date), '.', LPAD(MONTH(h.date), 2, '0')
+            )
+        `;
         const query = `
-            SELECT FORMAT(GetDate(),'yyyy.MM') AS 'date', CAST(SUM (amount) AS UNSIGNED) AS 'total'
+            SELECT ${DATE_FORMAT} AS 'date',
+                CAST(SUM (amount) AS UNSIGNED) AS 'total'
             FROM ${TABLE_NAME} AS h
                 INNER JOIN category AS c
                 ON h.category = c.id
             WHERE h.category = ${categoryId} AND 
                 h.date BETWEEN '${startDate}' AND '${endDate}'
-            GROUP BY FORMAT(GetDate(),'yyyy.MM')
-            ORDER BY FORMAT(GetDate(),'yyyy.MM')
+            GROUP BY ${DATE_FORMAT}
+            ORDER BY ${DATE_FORMAT}
         `;
 
-        const sums = await pool.execute(query);
+        const [sums] = await pool.execute(query);
         return sums;
     }
 
-    return { create, findById, findByRange, updateById, deleteById, countAmountByMonth };
+    return { create, findById, findByRange, updateById, deleteById, sumAmountsByMonth };
 })();
