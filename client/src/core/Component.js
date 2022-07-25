@@ -7,10 +7,15 @@ export default class Component {
         this.state = makeObservable(this.initState());
         this._subscribeState(this.state, ...this.bindState());
         this.props = props;
+        this.ref = this.initRef();
 
         this._render();
 
         return this.element;
+    }
+
+    initRef() {
+        return {};
     }
 
     initState() {
@@ -20,10 +25,10 @@ export default class Component {
         return [];
     }
     _subscribeState(...args) {
-        const bindedRender = this._render.bind(this);
+        const boundRender = this._render.bind(this);
         args.forEach((state) => {
             if (state.prototype === PROXY_SYMBOL) {
-                subscribe(state, bindedRender);
+                subscribe(state, boundRender);
             }
         });
     }
