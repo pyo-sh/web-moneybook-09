@@ -1,3 +1,5 @@
+const CONTENT_MAX_LENGTH = 150;
+
 /**
  *
  * @param {} value
@@ -13,12 +15,31 @@ export const formatDate = (value) => {
 
 /**
  *
+ * @param {*} date
+ * @returns
+ * date객체를 yyyy.mm.dd로 바꾼다.
+ */
+export function formatDateToString(date) {
+    let month = `${date.getMonth() + 1}`;
+    let day = `${date.getDate()}`;
+    let year = date.getFullYear();
+
+    if (month.length < 2) {
+        month = `0${month}`;
+    }
+    if (day.length < 2) {
+        day = `0${day}`;
+    }
+    return [year, month, day].join("");
+}
+/**
+ *
  * @param {} value
  * @returns
  * yyyy.mm.dd 형태의 string이 실제 date와 같은지 알려준다.
  */
 export const validateDate = (value) => {
-    const birthRegex = /^(\d{4})\.(\d{2})\.(\d{2})$/g;
+    const dateRegex = /^(\d{4})\.(\d{2})\.(\d{2})$/g;
     const yyyymmdd = value.replace(/\./g, "");
 
     const y = yyyymmdd.substr(0, 4);
@@ -26,7 +47,7 @@ export const validateDate = (value) => {
     const d = yyyymmdd.substr(6, 2);
     const newDate = new Date(y, m, d);
 
-    return value.match(birthRegex) && formatDate(newDate) === yyyymmdd;
+    return value.match(dateRegex) && formatDateToString(newDate) === yyyymmdd;
 };
 
 /**
@@ -44,4 +65,26 @@ export const formatAmount = (value) => {
     const formattedAmount = digitString ? Number(digitString).toLocaleString() : "";
 
     return formattedAmount;
+};
+
+export const validateAmount = (value) => Number(value) > 0;
+
+export const validateContent = (value) => value && value.length < CONTENT_MAX_LENGTH;
+
+export const validatePaymentMethod = (value) => value;
+
+export const validateIsIncome = (value) => value !== null;
+
+export const validateHistoryForm = (historyFormInputs) => {
+    const validateMap = {
+        date: validateDate,
+        content: validateContent,
+        paymentMethod: validatePaymentMethod,
+        amount: validateAmount,
+        isIncome: validateIsIncome,
+    };
+
+    return Object.entries(historyFormInputs).every(([key, value]) =>
+        validateMap[key] ? validateMap[key](value) : true,
+    );
 };
