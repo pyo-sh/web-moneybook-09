@@ -1,3 +1,4 @@
+import "./GlobalStyle.css";
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
 import Header from "@components/Header";
