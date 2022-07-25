@@ -16,14 +16,15 @@ export default class Modal extends Component {
     }
 
     render() {
-        console.log("modal");
         const { value, type } = ModalState;
-        // prettier-ignore
-        return  type ? (div({class:"modalContainer"})(
-            div({class:"blackScreen"})(),
-            div({class:"modalWrapper"})(
-                modalMap[type](value)    
-            ))
-        ) :div();
+
+        if (!type) {
+            return div();
+        }
+
+        return div({ class: "modalContainer" })(
+            div({ class: "blackScreen" })(),
+            div({ class: "modalWrapper" })(modalMap[type](value)),
+        );
     }
 }
