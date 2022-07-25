@@ -55,4 +55,15 @@ router.get("/statistic", async (req, res, next) => {
     }
 });
 
+router.get("/expenditure", async (req, res, next) => {
+    try {
+        const { category: categoryId, date } = req.query;
+
+        const histories = await HistoryService.getExpenditureByCategory(categoryId, date);
+        return res.send(histories);
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;

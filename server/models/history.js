@@ -35,6 +35,16 @@ module.exports = (function HistoryModel() {
         const [rows] = await pool.execute(query);
         return rows;
     }
+    async function findByRangeAndCategory({ startDate, endDate, categoryId }) {
+        const query = `
+            SELECT *
+            FROM ${TABLE_NAME}
+            WHERE category = ${categoryId} AND
+                '${startDate}' <= date AND date < '${endDate}'
+        `;
+        const [rows] = await pool.execute(query);
+        return rows;
+    }
 
     async function updateById({ id, data }) {
         const query = getUpdateQuery(TABLE_INFO, id, data);
@@ -81,5 +91,13 @@ module.exports = (function HistoryModel() {
         return sums;
     }
 
-    return { create, findById, findByRange, updateById, deleteById, sumAmountsByMonth };
+    return {
+        create,
+        findById,
+        findByRange,
+        findByRangeAndCategory,
+        updateById,
+        deleteById,
+        sumAmountsByMonth,
+    };
 })();

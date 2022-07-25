@@ -26,7 +26,7 @@ module.exports = (function HistoryService() {
             startDate,
             endDate,
         });
-        // TODO : Array to Object => year.month is key
+
         const histories = dbResults.map(formatPropertyToCamel);
         return groupObjectByDate(histories);
     }
@@ -66,5 +66,25 @@ module.exports = (function HistoryService() {
         return sums;
     }
 
-    return { addHistory, editHistory, deleteHistory, getHistoryByMonth, getHistoryRecentSum };
+    async function getExpenditureByCategory(categoryId, date) {
+        const startDate = `${date}.01`.replaceAll(".", "-");
+        const endDate = getFormatDateByInterval(new Date(startDate), 1);
+
+        const dbResults = await HistoryModel.findByRangeAndCategory({
+            categoryId,
+            startDate,
+            endDate,
+        });
+        const histories = dbResults.map(formatPropertyToCamel);
+        return groupObjectByDate(histories);
+    }
+
+    return {
+        addHistory,
+        editHistory,
+        deleteHistory,
+        getHistoryByMonth,
+        getHistoryRecentSum,
+        getExpenditureByCategory,
+    };
 })();
