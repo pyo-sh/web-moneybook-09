@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const categoryRouter = require("./category");
+const historyRouter = require("./history");
 const paymentMethodRouter = require("./paymentMethod");
 
 router.use("/category", categoryRouter);
+router.use("/history", historyRouter);
 router.use("/payment-method", paymentMethodRouter);
 
 /* Error Controller */
