@@ -11,7 +11,7 @@ const objectToQuerySet = (obj) => {
     return entries
         .reduce((set, [key, value]) => {
             if (typeof value === "boolean") {
-                value = parseInt(value);
+                value = Number(value);
             }
             set.push(`${key} = "${value}"`);
             return set;
