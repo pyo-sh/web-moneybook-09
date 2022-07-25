@@ -1,5 +1,9 @@
 const CategoryModel = require("../models/category");
-const { formatPropertyToSnake, formatPropertyToCamel } = require("../utils/format");
+const {
+    formatPropertyToSnake,
+    formatPropertyToCamel,
+    formatObjectById,
+} = require("../utils/format");
 
 module.exports = (function CategoryService() {
     async function addCategory(body) {
@@ -15,7 +19,8 @@ module.exports = (function CategoryService() {
 
     async function getCategoryAll() {
         const dbResults = await CategoryModel.findAll();
-        return dbResults.map(formatPropertyToCamel);
+        const categories = dbResults.map(formatPropertyToCamel);
+        return formatObjectById(categories);
     }
 
     async function editCategory(id, body) {

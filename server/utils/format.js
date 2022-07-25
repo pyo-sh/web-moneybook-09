@@ -23,6 +23,14 @@ const formatPropertyToCamel = (object) => {
     }, {});
 };
 
+const formatObjectById = (array) => {
+    return array.reduce((resultObj, targetObj) => {
+        const { id } = targetObj;
+        resultObj[id] = targetObj;
+        return resultObj;
+    }, {});
+};
+
 /**
  * 일 별로 나누어서 렌더링 하기 위한 key : value 변환 작업
  * @param {*} array History 데이터 들의 집합
@@ -47,5 +55,6 @@ module.exports = {
     camelToSnakeCase,
     formatPropertyToSnake,
     formatPropertyToCamel,
+    formatObjectById,
     groupObjectByDate,
 };
