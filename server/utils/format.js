@@ -21,9 +21,18 @@ const formatPropertyToCamel = (object) => {
     }, {});
 };
 
+const formatObjectById = (array) => {
+    return array.reduce((resultObj, targetObj) => {
+        const { id } = targetObj;
+        resultObj[id] = targetObj;
+        return resultObj;
+    }, {});
+};
+
 module.exports = {
     snakeToCamel,
     camelToSnakeCase,
     formatPropertyToSnake,
     formatPropertyToCamel,
+    formatObjectById,
 };
