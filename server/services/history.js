@@ -1,6 +1,10 @@
 const HistoryModel = require("../models/history");
-const { formatPropertyToSnake, formatPropertyToCamel } = require("../utils/format");
-const { getFormatDateByInterval } = require("../utils/time");
+const {
+    formatPropertyToSnake,
+    formatPropertyToCamel,
+    groupObjectByDate,
+} = require("../utils/format");
+const { getFormatDate, getFormatDateByInterval } = require("../utils/time");
 
 module.exports = (function HistoryService() {
     async function addHistory(body) {
@@ -24,7 +28,7 @@ module.exports = (function HistoryService() {
         });
         // TODO : Array to Object => year.month is key
         const histories = dbResults.map(formatPropertyToCamel);
-        return histories;
+        return groupObjectByDate(histories);
     }
 
     async function editHistory(id, body) {
@@ -32,8 +36,12 @@ module.exports = (function HistoryService() {
 
         const isSuccess = await HistoryModel.updateById({ id, data });
         if (isSuccess) {
-            const history = await HistoryModel.findById({ id });
-            return formatPropertyToCamel(history);
+            const pureHistory = await HistoryModel.findById({ id });
+            const history = formatPropertyToCamel(pureHistory);
+            return {
+                ...history,
+                date: getFormatDate(history.date).replaceAll("-", "."),
+            };
         } else {
             throw Error("Edit History : Error on HistoryModel.updateById");
         }
