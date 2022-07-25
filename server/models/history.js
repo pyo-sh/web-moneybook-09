@@ -29,7 +29,7 @@ module.exports = (function HistoryModel() {
     async function findByRange({ startDate, endDate }) {
         const query = `
             SELECT *
-            FROM history
+            FROM ${TABLE_NAME}
             WHERE date
             BETWEEN '${startDate}' AND '${endDate}'
         `;
@@ -60,5 +60,21 @@ module.exports = (function HistoryModel() {
         return id;
     }
 
-    return { create, findById, findByRange, updateById, deleteById };
+    async function countAmountByMonth({ categoryId, startDate, endDate }) {
+        const query = `
+            SELECT FORMAT(GetDate(),'yyyy.MM') AS 'date', CAST(SUM (amount) AS UNSIGNED) AS 'total'
+            FROM ${TABLE_NAME} AS h
+                INNER JOIN category AS c
+                ON h.category = c.id
+            WHERE h.category = ${categoryId} AND 
+                h.date BETWEEN '${startDate}' AND '${endDate}'
+            GROUP BY FORMAT(GetDate(),'yyyy.MM')
+            ORDER BY FORMAT(GetDate(),'yyyy.MM')
+        `;
+
+        const sums = await pool.execute(query);
+        return sums;
+    }
+
+    return { create, findById, findByRange, updateById, deleteById, countAmountByMonth };
 })();

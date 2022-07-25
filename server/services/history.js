@@ -19,7 +19,7 @@ module.exports = (function HistoryService() {
     }
 
     async function getHistoryByMonth(date) {
-        const startDate = `${date}.01`.replace(".", "-");
+        const startDate = `${date}.01`.replaceAll(".", "-");
         const endDate = getFormatDateByInterval(new Date(startDate), 1);
 
         const dbResults = await HistoryModel.findByRange({
@@ -52,12 +52,12 @@ module.exports = (function HistoryService() {
     }
 
     async function getHistoryRecentSum(categoryId, date) {
-        const currentDate = new Date(`${date}.01`.replace(".", "-"));
+        const currentDate = new Date(`${date}.01`.replaceAll(".", "-"));
 
         const startDate = getFormatDateByInterval(currentDate, -6);
         const endDate = getFormatDateByInterval(currentDate, 6);
 
-        return await HistoryModel.findByRange({ startDate, endDate });
+        return await HistoryModel.countAmountByMonth({ categoryId, startDate, endDate });
     }
 
     return { addHistory, editHistory, deleteHistory, getHistoryByMonth, getHistoryRecentSum };

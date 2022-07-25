@@ -45,4 +45,15 @@ router.get("/", async (req, res, next) => {
     }
 });
 
+router.get("/statistic", async (req, res, next) => {
+    try {
+        const { category: categoryId, date } = req.query;
+
+        const histories = await HistoryService.getHistoryRecentSum(categoryId, date);
+        return res.send(histories);
+    } catch (e) {
+        next(e);
+    }
+});
+
 module.exports = router;
