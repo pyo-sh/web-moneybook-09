@@ -5,10 +5,11 @@ import Account from "@src/pages/Account";
 import Calendar from "@pages/Calendar";
 import Statistic from "@pages/Statistic";
 import { pageState, Routes } from "@core/Route";
+import controlDate from "@store/controlDate";
 
 export default class App extends Component {
     bindState() {
-        return [pageState];
+        return [pageState, controlDate.state];
     }
 
     render() {
