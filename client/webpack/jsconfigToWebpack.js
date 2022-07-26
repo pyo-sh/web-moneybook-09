@@ -14,7 +14,6 @@ module.exports = function getWebpackAliasFromJsconfig({ paths, baseUrl }, client
         const [relativePathToDir] = pathAtJsConfig.split("/*");
 
         const absolutePath = path.join(clientPath, baseUrl || "", relativePathToDir);
-        console.log(absolutePath);
         return {
             ...currentAlias,
             [aliasKey]: absolutePath,

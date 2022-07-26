@@ -27,6 +27,8 @@ export const validatePaymentMethod = (value) => value;
 
 export const validateIsIncome = (value) => value !== null;
 
+export const validateCategory = (value) => value;
+
 export const validateHistoryForm = (historyFormInputs) => {
     const validateMap = {
         date: validateDate,
@@ -34,6 +36,7 @@ export const validateHistoryForm = (historyFormInputs) => {
         paymentMethod: validatePaymentMethod,
         amount: validateAmount,
         isIncome: validateIsIncome,
+        category: validateCategory,
     };
 
     return Object.entries(historyFormInputs).every(([key, value]) =>

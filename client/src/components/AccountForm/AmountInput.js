@@ -1,9 +1,11 @@
 import { div, label, button, input, span } from "@core/CreateDom";
+import { validateEvent } from "./customEvent";
 import { formatAmount } from "./format";
 
 const AmountInput = ({ ref, state }) => {
-    const toggleIsIncome = () => {
+    const toggleIsIncome = ({ currentTarget }) => {
         ref.category = null;
+        currentTarget.dispatchEvent(validateEvent);
         state.isIncome = !state.isIncome;
     };
 
@@ -15,7 +17,7 @@ const AmountInput = ({ ref, state }) => {
     const setAmount = ({ currentTarget }) => {
         currentTarget.value = formatAmount(currentTarget.value); //문자열
         ref.amount = currentTarget.value.replace(/,/g, "");
-        currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
+        currentTarget.dispatchEvent(validateEvent);
     };
 
     return div({ class: "inputBox" })(
