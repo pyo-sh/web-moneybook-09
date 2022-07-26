@@ -1,4 +1,5 @@
 import { div, input, label } from "@core/CreateDom";
+import { validateEvent } from "./customEvent";
 
 const FormInput = ({
     ref,
@@ -12,7 +13,7 @@ const FormInput = ({
     const setInputValue = ({ currentTarget }) => {
         ref[key] = format(currentTarget.value);
         currentTarget.value = ref[key];
-        currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
+        currentTarget.dispatchEvent(validateEvent);
     };
 
     return div({ class: "inputBox" })(

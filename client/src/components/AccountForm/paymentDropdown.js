@@ -2,6 +2,7 @@ import { div, button, span } from "@core/CreateDom";
 import { xIcon, downArrowIcon } from "@icons";
 import modal from "@store/modal";
 import paymentMethods from "@store/paymentMethods";
+import { validateEvent } from "./customEvent";
 
 // const paymentMethods = ["현금", "체크카드", "현대카드"];
 
@@ -15,7 +16,7 @@ const PaymentDropdownPanel = ({ state, ref }) => {
             e.stopPropagation();
             ref.paymentMethod = paymentMethodId;
             state.isPaymentMethodClick = false;
-            e.currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
+            e.currentTarget.dispatchEvent(validateEvent);
         };
 
         return div({ class: "panelItemContainer" })(

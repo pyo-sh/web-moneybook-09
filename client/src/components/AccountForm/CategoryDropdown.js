@@ -1,6 +1,7 @@
 import { div, span } from "@core/CreateDom";
 import { downArrowIcon } from "@icons";
 import categories from "@store/categories";
+import { validateEvent } from "./customEvent";
 
 const CategoryDropdownPanel = ({ state, ref }) => {
     const categoryIds = categories.filterCategoryIds(state.isIncome);
@@ -10,7 +11,7 @@ const CategoryDropdownPanel = ({ state, ref }) => {
             e.stopPropagation();
             ref.category = categoryId;
             state.isCategoryClick = false;
-            e.currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
+            e.currentTarget.dispatchEvent(validateEvent);
         };
 
         const category = categories.getCategoryById(categoryId);
