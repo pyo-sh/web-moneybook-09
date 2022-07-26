@@ -4,7 +4,7 @@ const {
     formatPropertyToCamel,
     groupObjectByDate,
 } = require("../utils/format");
-const { getFormatDate, getFormatDateByInterval } = require("../utils/time");
+const { getFormatDate, getFormatDateByInterval, getYearDates } = require("../utils/time");
 
 module.exports = (function HistoryService() {
     async function addHistory(body) {
@@ -26,7 +26,7 @@ module.exports = (function HistoryService() {
             startDate,
             endDate,
         });
-        // TODO : Array to Object => year.month is key
+
         const histories = dbResults.map(formatPropertyToCamel);
         return groupObjectByDate(histories);
     }
@@ -34,17 +34,14 @@ module.exports = (function HistoryService() {
     async function editHistory(id, body) {
         const data = formatPropertyToSnake(body);
 
-        const isSuccess = await HistoryModel.updateById({ id, data });
-        if (isSuccess) {
-            const pureHistory = await HistoryModel.findById({ id });
-            const history = formatPropertyToCamel(pureHistory);
-            return {
-                ...history,
-                date: getFormatDate(history.date).replaceAll("-", "."),
-            };
-        } else {
-            throw Error("Edit History : Error on HistoryModel.updateById");
-        }
+        await HistoryModel.updateById({ id, data });
+
+        const pureHistory = await HistoryModel.findById({ id });
+        const history = formatPropertyToCamel(pureHistory);
+        return {
+            ...history,
+            date: getFormatDate(history.date).replaceAll("-", "."),
+        };
     }
 
     async function deleteHistory(id) {
@@ -57,8 +54,34 @@ module.exports = (function HistoryService() {
         const startDate = getFormatDateByInterval(currentDate, -6);
         const endDate = getFormatDateByInterval(currentDate, 6);
 
-        return await HistoryModel.countAmountByMonth({ categoryId, startDate, endDate });
+        const dbResults = await HistoryModel.sumAmountsByMonth({ categoryId, startDate, endDate });
+        const yearSums = getYearDates(startDate, endDate);
+        const sums = dbResults.reduce((acc, { date, total }) => {
+            yearSums[date] = total;
+            return acc;
+        }, yearSums);
+        return sums;
     }
 
-    return { addHistory, editHistory, deleteHistory, getHistoryByMonth, getHistoryRecentSum };
+    async function getExpenditureByCategory(categoryId, date) {
+        const startDate = `${date}.01`.replaceAll(".", "-");
+        const endDate = getFormatDateByInterval(new Date(startDate), 1);
+
+        const dbResults = await HistoryModel.findByRangeAndCategory({
+            categoryId,
+            startDate,
+            endDate,
+        });
+        const histories = dbResults.map(formatPropertyToCamel);
+        return groupObjectByDate(histories);
+    }
+
+    return {
+        addHistory,
+        editHistory,
+        deleteHistory,
+        getHistoryByMonth,
+        getHistoryRecentSum,
+        getExpenditureByCategory,
+    };
 })();
