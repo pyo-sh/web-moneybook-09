@@ -1,50 +1,51 @@
 import { div, span } from "@core/CreateDom";
 import { downArrowIcon } from "@icons";
+import categories from "@store/categories";
 
-const getCategories = (isIncome) => {
-    return isIncome
-        ? ["월급", "용돈", "기타수입"]
-        : ["생활", "식비", "교통", "쇼핑/뷰티", "의료/건강", "문화/여가", "미분류"];
-};
+const CategoryDropdownPanel = ({ state, ref }) => {
+    const categoryIds = categories.filterCategoryIds(state.isIncome);
 
-const CategoryDropdownPanel = ({ state, ref, categories }) => {
-    const panelItem = (value) => {
+    const panelItem = (categoryId) => {
         const setCategory = (e) => {
             e.stopPropagation();
-            ref.category = value;
+            ref.category = categoryId;
             state.isCategoryClick = false;
             e.currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
         };
+
+        const category = categories.getCategoryById(categoryId);
 
         return div({ class: "panelItemContainer" })(
             div({
                 class: "panelItem",
                 event: { click: setCategory },
-            })(span(value)),
+            })(span(category)),
         );
     };
+
     // prettier-ignore
     return div({ class: "dropdownPanel" })(
-        ...categories.map((category) => panelItem(category)));
+        ...categoryIds.map((categoryId) => panelItem(categoryId)));
 };
 
 const CategoryDropdown = ({ state, ref }) => {
-    const toggleIsClick = ({ currentTarget }) => {
+    const categoryId = ref.category;
+    const category = categories.getCategoryById(categoryId);
+
+    const toggleIsClick = () => {
         state.isCategoryClick = !state.isCategoryClick;
     };
-    // 나중에 분리
-    const categories = getCategories(state.isIncome);
 
     return div({ class: "inputBox" })(
         div({ class: "inputItem category", event: { click: toggleIsClick } })(
             div({ class: "text_bold_small label", role: "label" })("분류"),
             div({ class: "text_body_regular dropdown" })(
-                span({ class: `dropdownInput ${ref.category ? "active" : ""}` })(
-                    `${ref.category ?? "선택하세요"}`,
+                span({ class: `dropdownInput ${category ? "active" : ""}` })(
+                    `${category ?? "선택하세요"}`,
                 ),
                 span({ class: "smallIcon" })(downArrowIcon()),
             ),
-            state.isCategoryClick && CategoryDropdownPanel({ state, ref, categories }),
+            state.isCategoryClick && CategoryDropdownPanel({ state, ref }),
         ),
     );
 };
