@@ -5,6 +5,8 @@ const {
     getUpdateQuery,
     getDeleteQuery,
 } = require("../utils/query");
+const createError = require("http-errors");
+const { DB_NO_AFFECT_ERROR } = require("../utils/errorMessages");
 
 module.exports = (function HistoryModel() {
     const TABLE_NAME = "history";
@@ -30,8 +32,17 @@ module.exports = (function HistoryModel() {
         const query = `
             SELECT *
             FROM ${TABLE_NAME}
-            WHERE date
-            BETWEEN '${startDate}' AND '${endDate}'
+            WHERE '${startDate}' <= date AND date < '${endDate}'
+        `;
+        const [rows] = await pool.execute(query);
+        return rows;
+    }
+    async function findByRangeAndCategory({ startDate, endDate, categoryId }) {
+        const query = `
+            SELECT *
+            FROM ${TABLE_NAME}
+            WHERE category = ${categoryId} AND
+                '${startDate}' <= date AND date < '${endDate}'
         `;
         const [rows] = await pool.execute(query);
         return rows;
@@ -43,10 +54,10 @@ module.exports = (function HistoryModel() {
 
         if (fields.affectedRows <= 0) {
             console.log(fields);
-            throw Error("Database Row didn't Affected");
+            throw createError.BadRequest(DB_NO_AFFECT_ERROR);
         }
 
-        return true;
+        return fields;
     }
 
     async function deleteById({ id }) {
@@ -54,27 +65,41 @@ module.exports = (function HistoryModel() {
         const [fields] = await pool.execute(query);
 
         if (fields.affectedRows <= 0) {
-            throw Error("Database Row didn't Affected");
+            throw createError.BadRequest(DB_NO_AFFECT_ERROR);
         }
 
         return id;
     }
 
-    async function countAmountByMonth({ categoryId, startDate, endDate }) {
+    async function sumAmountsByMonth({ categoryId, startDate, endDate }) {
+        const DATE_FORMAT = `
+            CONCAT(
+                YEAR(h.date), '.', LPAD(MONTH(h.date), 2, '0')
+            )
+        `;
         const query = `
-            SELECT FORMAT(GetDate(),'yyyy.MM') AS 'date', CAST(SUM (amount) AS UNSIGNED) AS 'total'
+            SELECT ${DATE_FORMAT} AS 'date',
+                CAST(SUM (amount) AS UNSIGNED) AS 'total'
             FROM ${TABLE_NAME} AS h
                 INNER JOIN category AS c
                 ON h.category = c.id
             WHERE h.category = ${categoryId} AND 
-                h.date BETWEEN '${startDate}' AND '${endDate}'
-            GROUP BY FORMAT(GetDate(),'yyyy.MM')
-            ORDER BY FORMAT(GetDate(),'yyyy.MM')
+                '${startDate}' <= date AND date < '${endDate}'
+            GROUP BY ${DATE_FORMAT}
+            ORDER BY ${DATE_FORMAT}
         `;
 
-        const sums = await pool.execute(query);
+        const [sums] = await pool.execute(query);
         return sums;
     }
 
-    return { create, findById, findByRange, updateById, deleteById, countAmountByMonth };
+    return {
+        create,
+        findById,
+        findByRange,
+        findByRangeAndCategory,
+        updateById,
+        deleteById,
+        sumAmountsByMonth,
+    };
 })();
