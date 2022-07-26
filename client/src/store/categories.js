@@ -9,6 +9,7 @@ const state = makeObservable({
 const fetchData = async () => {
     const { categories } = await getAllCategories();
     state.value = categories;
+    state.isLoading = false;
 };
 
 const getCategoryById = (id) => {
@@ -24,9 +25,10 @@ const filterCategoryIds = (isIncome) => {
     return selectedIds;
 };
 
-(async function () {
+async function initCategories() {
+    state.isLoading = true;
     await fetchData();
-    state.isLoading = false;
-})();
+}
+initCategories();
 
 export default { fetchData, state, getCategoryById, filterCategoryIds };

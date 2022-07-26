@@ -4,6 +4,7 @@ import { div, h4, lh, li, span, ul } from "@core/CreateDom";
 import histories from "@store/histories";
 import { getLocaleDate } from "@utils/date";
 import { formatAmount } from "@utils/format";
+import categories from "@store/categories";
 
 export default class HistoryDetails extends Component {
     render() {
@@ -44,13 +45,15 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
     );
 };
 
-const HistoryItem = ({ category, content, paymentMethod, amount, isIncome }) => {
+const HistoryItem = ({ category: categoryId, content, paymentMethod, amount, isIncome }) => {
+    const { name: categoryName, color: categoryColor } = categories.state.value[categoryId];
+
     // prettier-ignore
     return li({ class: "item text_body_medium" })(
         div({
-            style: `background-color: ${""}`,
+            style: `background-color: ${categoryColor}`,
             class: "itemCategory text_bold_medium",
-        })(category),
+        })(categoryName),
         div({ class: "itemContent" })(content),
         div({ class: "itemPaymentMethod" })(paymentMethod),
         div({ class: "itemAmount" })(`${(isIncome ? "" : "-")}${formatAmount(amount)}원`),
