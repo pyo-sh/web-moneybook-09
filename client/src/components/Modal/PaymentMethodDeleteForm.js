@@ -5,6 +5,8 @@ import modal from "@store/modal";
 import paymentMethods from "@store/paymentMethods";
 
 const PaymentMethodDeleteForm = (value) => {
+    const paymentMethodValue = paymentMethods.getPaymentMethodById(value);
+
     const submit = async (event) => {
         event.preventDefault();
         await deletePaymentMethod(value);
@@ -14,7 +16,9 @@ const PaymentMethodDeleteForm = (value) => {
 
     return form({ class: "modal text_body_medium ", event: { submit } })(
         div({ class: "info" })("해당 결제수단을 삭제하시겠습니까?"),
-        div({ class: "modalInput text_body_medium", placeholder: "입력하세요" })(value),
+        div({ class: "modalInput text_body_medium", placeholder: "입력하세요" })(
+            paymentMethodValue,
+        ),
         ul({ class: "modalBtnWrapper" })(
             button({
                 type: "button",

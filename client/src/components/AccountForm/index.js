@@ -11,6 +11,7 @@ import { formatDate } from "./format";
 import selectedHistory from "@store/selectedHistory";
 import { compareObjects } from "@utils/compareObject";
 import categories from "@store/categories";
+import paymentMethods from "@store/paymentMethods";
 
 const ACTIVE_COLOR = "white";
 const PRIMARY_COLOR = "#2ac1bc";
@@ -26,7 +27,7 @@ export default class AccountForm extends Component {
     }
 
     bindState() {
-        return [selectedHistory.state, categories.state];
+        return [selectedHistory.state, categories.state, paymentMethods.state];
     }
 
     initRef() {
