@@ -8,7 +8,7 @@ import PaymentDropdown from "./paymentDropdown";
 import AmountInput from "./AmountInput";
 import { validateHistoryForm, validateDate } from "./validation";
 import { formatDate } from "./format";
-import { historyState } from "@store/historyState";
+import selectedHistory from "@store/selectedHistory";
 import { compareObjects } from "@utils/compareObject";
 
 const ACTIVE_COLOR = "white";
@@ -25,7 +25,7 @@ export default class AccountForm extends Component {
     }
 
     bindState() {
-        return [historyState];
+        return [selectedHistory.state];
     }
 
     initRef() {
@@ -49,7 +49,7 @@ export default class AccountForm extends Component {
 
     validateAll() {
         const innerInputValues = { ...this.ref, isIncome: this.state.isIncome };
-        const isNotChanged = compareObjects(innerInputValues, historyState);
+        const isNotChanged = compareObjects(innerInputValues, selectedHistory.state);
 
         if (isNotChanged) {
             return this.toggleActiveSubmitBtn(false);
@@ -61,18 +61,18 @@ export default class AccountForm extends Component {
 
     synchronize() {
         Object.keys(this.ref).forEach((key) => {
-            if (historyState[key]) {
-                this.ref[key] = historyState[key];
+            if (selectedHistory.state[key]) {
+                this.ref[key] = selectedHistory.state[key];
             }
         });
     }
     render() {
         const { ref, state } = this;
 
-        if (historyState.isClick) {
+        if (selectedHistory.state.isClick) {
             this.synchronize();
             this.validateAll();
-            historyState.isClick = false;
+            selectedHistory.state.isClick = false;
         }
 
         // prettier-ignore
