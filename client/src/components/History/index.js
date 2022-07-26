@@ -12,7 +12,7 @@ export default class History extends Component {
             isPaidSelected: true,
         };
     }
-    toggleSelected({ target }) {
+    toggleIsSelected({ target }) {
         const button = target.closest(".toggleButton");
         if (!button) {
             return false;
@@ -28,7 +28,7 @@ export default class History extends Component {
     }
     render() {
         const { isIncomeSelected, isPaidSelected } = this.state;
-        const toggleSelected = this.toggleSelected.bind(this);
+        const toggleIsSelected = this.toggleIsSelected.bind(this);
         const filteredHistories = histories.getFilteredHistories(this.state);
         // prettier-ignore
         return div({ class: "History" })(
@@ -36,7 +36,7 @@ export default class History extends Component {
                 filteredHistories,
                 isIncomeSelected,
                 isPaidSelected,
-                toggleSelected,
+                toggleIsSelected,
             }),
             new HistoryDetail({
                 filteredHistories,

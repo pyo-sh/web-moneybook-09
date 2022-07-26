@@ -9,7 +9,8 @@ const TRANSPARENT = "transparent";
 
 export default class HistorySummary extends Component {
     render() {
-        const { filteredHistories, isIncomeSelected, isPaidSelected, toggleSelected } = this.props;
+        const { filteredHistories, isIncomeSelected, isPaidSelected, toggleIsSelected } =
+            this.props;
         const [incomeTotal, paidTotal] = histories.getTotals();
 
         const incomeButtonClass = isIncomeSelected ? "activeButton" : "";
@@ -24,7 +25,7 @@ export default class HistorySummary extends Component {
             h3({ class: "text_body_large" })(`전체 내역 ${filteredHistories?.length ?? 0}건`),
             section({
                 class: "controller text_body_medium",
-                event: { click: toggleSelected },
+                event: { click: toggleIsSelected },
             })(
                 button({
                     id: "incomeToggle",
