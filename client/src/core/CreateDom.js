@@ -122,6 +122,7 @@ export const {
     kbd,
     label,
     legend,
+    lh,
     li,
     link,
     main,
