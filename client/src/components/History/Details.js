@@ -3,6 +3,7 @@ import "@components/History/Details.css";
 import { div, h4, lh, li, span, ul } from "@core/CreateDom";
 import histories from "@store/histories";
 import { getLocaleDate } from "@utils/date";
+import { formatAmount } from "@utils/format";
 
 export default class HistoryDetails extends Component {
     render() {
@@ -36,9 +37,9 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
         ),
         div({ class: "totals" })(
             showIncome ?? span("수입"),
-            showIncome ?? span(incomeTotal),
+            showIncome ?? span(formatAmount(incomeTotal)),
             showPaid ?? span("지출"),
-            showPaid ?? span(paidTotal),
+            showPaid ?? span(formatAmount(paidTotal)),
         ),
     );
 };
@@ -52,6 +53,6 @@ const HistoryItem = ({ category, content, paymentMethod, amount, isIncome }) => 
         })(category),
         div({ class: "itemContent" })(content),
         div({ class: "itemPaymentMethod" })(paymentMethod),
-        div({ class: "itemAmount" })(`${amount * (isIncome ? 1 : -1)}원`),
+        div({ class: "itemAmount" })(`${(isIncome ? "" : "-")}${formatAmount(amount)}원`),
     );
 };
