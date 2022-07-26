@@ -14,6 +14,7 @@ import paymentMethods from "@store/paymentMethods";
 import request from "@utils/request";
 import controlDate from "@store/controlDate";
 import { formatDate } from "@utils/format";
+import histories from "@store/histories";
 
 const ACTIVE_COLOR = "white";
 const PRIMARY_COLOR = "#2ac1bc";
@@ -93,12 +94,11 @@ export default class AccountForm extends Component {
         const { isIncome } = this.state;
         const data = { date, content, paymentMethod, category, amount, isIncome };
 
-        if (isEditRequest) {
-            await request.patch({ url: `/history/${historyId}`, body: data });
-        } else {
-            await request.post({ url: "/history", body: data });
-        }
+        const url = `/history/${isEditRequest ? historyId : ""}`;
+        const apiMethod = isEditRequest ? "patch" : "post";
+        const newHistory = await request[apiMethod]({ url, body: data });
 
+        histories.historiesUpdate(newHistory);
         this.resetRef();
         selectedHistory.resetHistoryState();
     }

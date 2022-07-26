@@ -68,9 +68,15 @@ const groupHistoriesByDate = (array) => {
     }, {});
 };
 
+const historiesUpdate = (newHistory) => {
+    const newHistories = state.details.filter(({ id }) => newHistory.id !== id);
+    state.details = [...newHistories, newHistory];
+};
+
 export default {
     state,
     getFilteredHistories,
     getTotals,
     groupHistoriesByDate,
+    historiesUpdate,
 };
