@@ -47,17 +47,18 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
 };
 
 const HistoryItem = ({
+    id,
     category: categoryId,
     content,
     paymentMethod: paymentMethodId,
     amount,
     isIncome,
 }) => {
-    const { name: categoryName, color: categoryColor } = categories.state.value[categoryId];
-    const { name: paymentMethodName } = paymentMethods.state.value[paymentMethodId];
+    const { name: categoryName, color: categoryColor } = categories.state.value[categoryId] ?? {};
+    const { name: paymentMethodName } = paymentMethods.state.value[paymentMethodId] ?? {};
 
     // prettier-ignore
-    return li({ class: "item text_body_medium" })(
+    return li({ class: "item text_body_medium", "data-id": id })(
         div({
             style: `background-color: ${categoryColor}`,
             class: "itemCategory text_bold_medium",

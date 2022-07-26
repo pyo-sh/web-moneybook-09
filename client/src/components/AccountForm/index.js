@@ -6,7 +6,7 @@ import FormInput from "./FormInput";
 import CategoryDropdown from "./CategoryDropdown";
 import PaymentDropdown from "./paymentDropdown";
 import AmountInput from "./AmountInput";
-import { validateHistoryForm, validateDate } from "./validation";
+import { validateHistoryForm } from "./validation";
 import selectedHistory from "@store/selectedHistory";
 import { compareObjects } from "@utils/compareObject";
 import categories from "@store/categories";
@@ -24,7 +24,6 @@ export default class AccountForm extends Component {
             isCategoryClick: false,
             isPaymentClick: false,
             isIncome: false,
-            isAllValid: false,
         };
     }
 
@@ -35,7 +34,7 @@ export default class AccountForm extends Component {
     initRef() {
         return {
             isAllValid: false,
-            date: controlDate.getFormattedDate(), // 전역 date로 대체
+            date: controlDate.getFormattedDate(),
             content: null,
             paymentMethod: null,
             category: null,
@@ -59,7 +58,8 @@ export default class AccountForm extends Component {
         const innerInputValues = { ...this.ref, isIncome: this.state.isIncome };
         const isNotChanged = compareObjects(innerInputValues, selectedHistory.state);
 
-        if (isNotChanged) {
+        const { id: stateId } = selectedHistory.state;
+        if (stateId && isNotChanged) {
             return this.toggleActiveSubmitBtn(false);
         }
 
@@ -68,8 +68,11 @@ export default class AccountForm extends Component {
     }
 
     synchronize() {
+        if (selectedHistory.state.isIncome !== null) {
+            this.state.isIncome = Boolean(selectedHistory.state.isIncome);
+        }
         Object.keys(this.ref).forEach((key) => {
-            if (selectedHistory.state[key]) {
+            if (key in selectedHistory.state) {
                 this.ref[key] = selectedHistory.state[key];
             }
         });
@@ -104,20 +107,40 @@ export default class AccountForm extends Component {
         const { ref, state } = this;
 
         if (selectedHistory.state.isChanged) {
-            this.validateAll();
             this.synchronize();
+            this.validateAll();
             selectedHistory.state.isChanged = false;
         }
 
         // prettier-ignore
-        return form({ class: "accountForm", event: {validate: this.validateAll.bind(this) ,submit: this.submit.bind(this) }})(
-            FormInput({ref, key:"date",placeholder: "2022.07.01", labelText : "일자" , maxlength:10, validate: validateDate, format:formatDate}),
-            CategoryDropdown({ref, state}),
-            FormInput({ref, key:"content" , placeholder: "입력하세요", labelText : "내용"}),
-            PaymentDropdown({ref, state}),
-            AmountInput({ref,state}),
-            button({class:`saveButton ${this.ref.isAllValid && "active"} `})(
-                checkIcon(this.ref.isAllValid ? ACTIVE_COLOR : PRIMARY_COLOR )
+        return form({
+                class: "accountForm",
+                event: { 
+                    validate: this.validateAll.bind(this),
+                    submit: this.submit.bind(this)
+                },
+            })(
+            FormInput({
+                ref,
+                key:"date",
+                placeholder: "2022.07.01",
+                labelText : "일자",
+                maxLength: 10,
+                format:formatDate
+            }),
+            CategoryDropdown({ ref, state }),
+            FormInput({
+                ref,
+                key:"content",
+                placeholder: "입력하세요",
+                labelText : "내용",
+            }),
+            PaymentDropdown({ ref, state }),
+            AmountInput({ ref,state }),
+            button({
+                class:`saveButton ${this.ref.isAllValid && "active"}`,
+            })(
+                checkIcon(this.ref.isAllValid ? ACTIVE_COLOR : PRIMARY_COLOR)
             )
         );
     }
