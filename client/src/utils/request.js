@@ -27,15 +27,21 @@ const customFetch =
             }
         }
 
-        const response = await fetch(`${BASE_URL}${url}${query_string}`, init);
+        try {
+            const response = await fetch(`${BASE_URL}${url}${query_string}`, init);
+            // const { status } = response;
 
-        const { status } = response;
-        if (!status) {
-            return response;
+            // response.ok = 200~299
+            if (!response.ok) {
+                throw new Error("network error");
+            }
+
+            const result = await response.json();
+
+            return result;
+        } catch (error) {
+            // TODO: custom error
         }
-
-        const json = await response.json();
-        return { json, status };
     };
 
 const request = {
