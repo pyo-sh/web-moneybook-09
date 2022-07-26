@@ -37,6 +37,9 @@
     border-bottom: 1px solid var(--color-Line);
     cursor: pointer;
 }
+.historyDetail .item:hover {
+    background-color: var(--color-Line);
+}
 
 .historyDetail .info + .item {
     border-top: 1px solid var(--color-Line);

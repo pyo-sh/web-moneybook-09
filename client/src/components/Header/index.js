@@ -3,10 +3,11 @@ import "@components/Header/index.css";
 import { a, article, button, div, h1, h2, header, section, span } from "@core/CreateDom";
 import { fileTextIcon, calendarIcon, chartIcon } from "@icons";
 import downArrowIcon from "@icons/downArrow";
-import Route from "@core/Route";
+import Route, { pageState } from "@core/Route";
 import controlDate from "@store/controlDate";
 
 const WHITE = "#ffffff";
+const PRIMARY2 = "#a0e1e0";
 
 export default class Header extends Component {
     onClickATag(e) {
@@ -36,6 +37,7 @@ export default class Header extends Component {
         const currentDate = controlDate.state.value;
         const month = currentDate.getMonth() + 1;
         const year = currentDate.getFullYear();
+        const { page } = pageState;
         // prettier-ignore
         return header({ class: "header" })(
             div({
@@ -59,9 +61,9 @@ export default class Header extends Component {
                     button({ id: "monthNextMover", class: "monthMover" })(downArrowIcon(WHITE, 24, 24)),
                 ),
                 section({ class: "pageTabs" })(
-                    a({ href: "/" })(fileTextIcon(WHITE)),
-                    a({ href: "/calendar" })(calendarIcon(WHITE)),
-                    a({ href: "/statistic" })(chartIcon(WHITE)),
+                    a({ href: "/" })(fileTextIcon(page === "" ? WHITE : PRIMARY2)),
+                    a({ href: "/calendar" })(calendarIcon(page === "calendar" ? WHITE : PRIMARY2)),
+                    a({ href: "/statistic" })(chartIcon(page === "statistic" ? WHITE : PRIMARY2)),
                 ),
             ),
         );
