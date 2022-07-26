@@ -15,7 +15,7 @@ export const formatDate = (value) => {
  *
  * @param {*} date
  * @returns
- * date객체를 yyyy.mm.dd로 바꾼다.
+ * date객체를 yyyymmdd로 바꾼다.
  */
 export function formatDateToString(date) {
     let month = `${date.getMonth() + 1}`;

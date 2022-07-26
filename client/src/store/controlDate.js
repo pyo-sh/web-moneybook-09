@@ -1,3 +1,4 @@
+import { formatDate, formatDateToString } from "@components/AccountForm/format";
 import { makeObservable } from "@core/Observer";
 import { changeDateMonth } from "@utils/date";
 
@@ -12,8 +13,15 @@ const moveNext = () => {
     state.value = changeDateMonth(state.value, +1);
 };
 
+const getFormattedDate = () => {
+    const date = state.value;
+    const yyyymmdd = formatDateToString(date);
+    return formatDate(yyyymmdd);
+};
+
 export default {
     state,
     movePrev,
     moveNext,
+    getFormattedDate,
 };
