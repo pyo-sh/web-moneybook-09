@@ -1,4 +1,4 @@
-import { makeObservable } from "@core/Observer";
+import { makeObservable, subscribe } from "@core/Observer";
 import { getHistoriesByMonth } from "@apis/history";
 import controlDate from "@store/controlDate";
 import { getYearMonth } from "@utils/date";
@@ -8,14 +8,20 @@ const state = makeObservable({
     isLoading: true,
 });
 
-(async function initState() {
+async function initState() {
+    state.details = [];
+    state.isLoading = true;
+
     const currentDate = controlDate.state.value;
     const dateString = getYearMonth(currentDate);
 
     const { histories } = await getHistoriesByMonth({ query: { date: dateString } });
     state.details = histories;
     state.isLoading = false;
-})();
+}
+
+subscribe(controlDate.state, initState);
+initState();
 
 const getFilteredHistories = ({ isIncomeSelected, isPaidSelected }) => {
     return state.details.filter(({ isIncome }) => {
