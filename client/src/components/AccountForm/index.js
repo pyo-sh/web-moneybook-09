@@ -1,4 +1,4 @@
-import "./accountForm.css";
+import "@components/AccountForm/index.css";
 import Component from "@core/Component";
 import { button, form } from "@core/CreateDom";
 import { checkIcon } from "@icons";
@@ -13,7 +13,7 @@ import categories from "@store/categories";
 import paymentMethods from "@store/paymentMethods";
 import request from "@utils/request";
 import controlDate from "@store/controlDate";
-import { formatDate } from "./format";
+import { formatDate } from "@utils/format";
 
 const ACTIVE_COLOR = "white";
 const PRIMARY_COLOR = "#2ac1bc";
