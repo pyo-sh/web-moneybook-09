@@ -1,43 +1,45 @@
 import { div, button, span } from "@core/CreateDom";
 import { xIcon, downArrowIcon } from "@icons";
-import { modalState } from "@store/modalState";
+import modal from "@store/modal";
+import paymentMethods from "@store/paymentMethods";
+import { validateEvent } from "./customEvent";
 
-const paymentMethods = ["현금", "체크카드", "현대카드"];
+// const paymentMethods = ["현금", "체크카드", "현대카드"];
 
-const PaymentDropdownPanel = ({ state, ref, paymentMethods }) => {
-    const openModal = (type, value = null) => {
-        return (e) => {
-            e.stopPropagation();
-            modalState.type = type;
-            modalState.value = value;
-        };
-    };
+const PaymentDropdownPanel = ({ state, ref }) => {
+    const paymentMethodIds = paymentMethods.getPaymentMethodIds();
 
-    const panelItem = (value) => {
+    const panelItem = (paymentMethodId) => {
+        const paymentMethod = paymentMethods.getPaymentMethodById(paymentMethodId);
+
         const setPaymentMethod = (e) => {
             e.stopPropagation();
-            ref.paymentMethod = value;
+            ref.paymentMethod = paymentMethodId;
             state.isPaymentMethodClick = false;
-            e.currentTarget.dispatchEvent(new Event("validate", { bubbles: true }));
+            e.currentTarget.dispatchEvent(validateEvent);
         };
 
         return div({ class: "panelItemContainer" })(
             div({
                 class: "panelItem",
                 event: { click: setPaymentMethod },
-            })(span(value), span({ event: { click: openModal("delete", value) } })(xIcon())),
+            })(
+                span(paymentMethod),
+                span({ event: { click: modal.open("delete", paymentMethodId) } })(xIcon()),
+            ),
         );
     };
 
     return div({ class: "dropdownPanel" })(
-        ...paymentMethods.map((paymentMethod) => panelItem(paymentMethod)),
+        ...paymentMethodIds.map((paymentMethodId) => panelItem(paymentMethodId)),
         div({ class: "panelItemContainer" })(
-            button({ event: { click: openModal("add") }, class: "panelItem" })("추가하기"),
+            button({ event: { click: modal.open("add") }, class: "panelItem" })("추가하기"),
         ),
     );
 };
 
 const PaymentDropdown = ({ state, ref }) => {
+    const paymentMethod = paymentMethods.getPaymentMethodById(ref.paymentMethod);
     const toggleIsClick = ({ currentTarget }) => {
         state.isPaymentMethodClick = !state.isPaymentMethodClick;
     };
@@ -46,12 +48,12 @@ const PaymentDropdown = ({ state, ref }) => {
         div({ class: "inputItem paymentMethod", event: { click: toggleIsClick } })(
             div({ class: "text_bold_small label", role: "label" })("결제수단"),
             div({ class: `text_body_regular dropdown` })(
-                span({ class: `dropdownInput  ${ref.paymentMethod ? "active" : ""}` })(
-                    `${ref.paymentMethod ?? "선택하세요"}`,
+                span({ class: `dropdownInput  ${paymentMethod ? "active" : ""}` })(
+                    `${paymentMethod ?? "선택하세요"}`,
                 ),
                 span({ class: "smallIcon" })(downArrowIcon()),
             ),
-            state.isPaymentMethodClick && PaymentDropdownPanel({ state, ref, paymentMethods }),
+            state.isPaymentMethodClick && PaymentDropdownPanel({ state, ref }),
         ),
     );
 };

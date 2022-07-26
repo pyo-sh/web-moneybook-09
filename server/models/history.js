@@ -57,7 +57,6 @@ module.exports = (function HistoryModel() {
         const [fields] = await pool.execute(query);
 
         if (fields.affectedRows <= 0) {
-            console.log(fields);
             throw createError.BadRequest(DB_NO_AFFECT_ERROR);
         }
 

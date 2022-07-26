@@ -7,11 +7,14 @@ import CategoryDropdown from "./CategoryDropdown";
 import PaymentDropdown from "./paymentDropdown";
 import AmountInput from "./AmountInput";
 import { validateHistoryForm, validateDate } from "./validation";
-import { formatDate } from "./format";
-import { historyState } from "@store/historyState";
+import selectedHistory from "@store/selectedHistory";
 import { compareObjects } from "@utils/compareObject";
+import categories from "@store/categories";
+import paymentMethods from "@store/paymentMethods";
+import request from "@utils/request";
+import controlDate from "@store/controlDate";
+import { formatDate } from "./format";
 
-// 내용 150;;
 const ACTIVE_COLOR = "white";
 const PRIMARY_COLOR = "#2ac1bc";
 
@@ -25,18 +28,27 @@ export default class AccountForm extends Component {
         };
     }
 
+    bindState() {
+        return [selectedHistory.state, categories.state, paymentMethods.state];
+    }
+
     initRef() {
         return {
             isAllValid: false,
-            date: "2020.05.04", // 전역 date로 대체
+            date: controlDate.getFormattedDate(), // 전역 date로 대체
             content: null,
             paymentMethod: null,
-            amount: null,
+            category: null,
             id: null,
+            amount: null,
         };
     }
 
-    activateSubmitBtn(isAllValid) {
+    resetRef() {
+        this.ref = this.initRef();
+    }
+
+    toggleActiveSubmitBtn(isAllValid) {
         this.ref.isAllValid = isAllValid;
         const saveBtn = document.querySelector(".saveButton");
         saveBtn.classList.toggle("active", isAllValid);
@@ -45,23 +57,60 @@ export default class AccountForm extends Component {
 
     validateAll() {
         const innerInputValues = { ...this.ref, isIncome: this.state.isIncome };
-        const isNotChanged = compareObjects(innerInputValues, historyState);
+        const isNotChanged = compareObjects(innerInputValues, selectedHistory.state);
 
         if (isNotChanged) {
-            return;
+            return this.toggleActiveSubmitBtn(false);
         }
 
         const isAllValid = validateHistoryForm(innerInputValues);
-        this.activateSubmitBtn(isAllValid);
+        this.toggleActiveSubmitBtn(isAllValid);
+    }
+
+    synchronize() {
+        Object.keys(this.ref).forEach((key) => {
+            if (selectedHistory.state[key]) {
+                this.ref[key] = selectedHistory.state[key];
+            }
+        });
+    }
+    async submit(e) {
+        e.preventDefault();
+
+        if (!this.ref.isAllValid) {
+            return;
+        }
+
+        const historyId = selectedHistory.state.id;
+        const isEditRequest = historyId !== null;
+
+        // 후에 다른 api로 수정
+
+        const { date, content, paymentMethod, category, amount } = this.ref;
+        const { isIncome } = this.state;
+        const data = { date, content, paymentMethod, category, amount, isIncome };
+
+        if (isEditRequest) {
+            await request.patch({ url: `/history/${historyId}`, body: data });
+        } else {
+            await request.post({ url: "/history", body: data });
+        }
+
+        this.resetRef();
+        selectedHistory.resetHistoryState();
     }
 
     render() {
         const { ref, state } = this;
 
+        if (selectedHistory.state.isChanged) {
+            this.validateAll();
+            this.synchronize();
+            selectedHistory.state.isChanged = false;
+        }
+
         // prettier-ignore
-        return form({ class: "accountForm", event: {validate: this.validateAll.bind(this) ,submit: (e)=>{
-            e.preventDefault();
-            this.validateAll();} }})(
+        return form({ class: "accountForm", event: {validate: this.validateAll.bind(this) ,submit: this.submit.bind(this) }})(
             FormInput({ref, key:"date",placeholder: "2022.07.01", labelText : "일자" , maxlength:10, validate: validateDate, format:formatDate}),
             CategoryDropdown({ref, state}),
             FormInput({ref, key:"content" , placeholder: "입력하세요", labelText : "내용"}),
