@@ -40,7 +40,6 @@ const PaymentDropdownPanel = ({ state, ref }) => {
 
 const PaymentDropdown = ({ state, ref }) => {
     const paymentMethod = paymentMethods.getPaymentMethodById(ref.paymentMethod);
-    console.log(paymentMethod);
     const toggleIsClick = ({ currentTarget }) => {
         state.isPaymentMethodClick = !state.isPaymentMethodClick;
     };

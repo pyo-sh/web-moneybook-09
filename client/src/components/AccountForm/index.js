@@ -95,7 +95,6 @@ export default class AccountForm extends Component {
         } else {
             await request.post({ url: "/history", body: data });
         }
-        console.log("reset");
 
         this.resetRef();
         selectedHistory.resetHistoryState();

@@ -9,7 +9,6 @@ const state = makeObservable({
 const fetchData = async () => {
     const { paymentMethods } = await getAllPaymentMethod();
     state.value = paymentMethods;
-    console.log(state);
 };
 
 const getPaymentMethodById = (id) => {

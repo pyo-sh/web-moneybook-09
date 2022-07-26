@@ -9,7 +9,6 @@ const state = makeObservable({
 const fetchData = async () => {
     const { categories } = await getAllCategories();
     state.value = categories;
-    console.log(state);
 };
 
 const getCategoryById = (id) => {
