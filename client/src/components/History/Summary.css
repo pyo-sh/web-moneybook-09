@@ -36,3 +36,6 @@
     border: 2px solid var(--color-Primary);
     background-color: var(--color-Primary);
 }
+.historySummary .inactiveAmount {
+    color: var(--color-Label);
+}

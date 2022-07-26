@@ -9,26 +9,37 @@ const TRANSPARENT = "transparent";
 
 export default class HistorySummary extends Component {
     render() {
-        const { filteredHistories, isIncomeSelected, isPaidSelected } = this.props;
+        const { filteredHistories, isIncomeSelected, isPaidSelected, toggleSelected } = this.props;
         const [incomeTotal, paidTotal] = histories.getTotals();
 
         const incomeButtonClass = isIncomeSelected ? "activeButton" : "";
+        const incomeAmountClass = isIncomeSelected ? "" : "inactiveAmount";
         const incomeIconColor = isIncomeSelected ? WHITE : TRANSPARENT;
         const paidButtonClass = isPaidSelected ? "activeButton" : "";
+        const paidAmountClass = isPaidSelected ? "" : "inactiveAmount";
         const paidIconColor = isPaidSelected ? WHITE : TRANSPARENT;
 
         // prettier-ignore
         return div({ class: "historySummary" })(
             h3({ class: "text_body_large" })(`전체 내역 ${filteredHistories?.length ?? 0}건`),
-            section({ class: "controller text_body_medium" })(
-                button({ class: `toggleButton ${incomeButtonClass}` })(
+            section({
+                class: "controller text_body_medium",
+                event: { click: toggleSelected },
+            })(
+                button({
+                    id: "incomeToggle",
+                    class: `toggleButton ${incomeButtonClass}`,
+                })(
                     checkIcon(incomeIconColor, 16, 16)
                 ),
-                span(`수입 ${incomeTotal}`),
-                button({ class: `toggleButton ${paidButtonClass}` })(
+                span({ class: incomeAmountClass })(`수입 ${incomeTotal}`),
+                button({
+                    id: "paidToggle",
+                    class: `toggleButton ${paidButtonClass}`,
+                })(
                     checkIcon(paidIconColor, 16, 16)
                 ),
-                span(`지출 ${paidTotal}`),
+                span({ class: paidAmountClass })(`지출 ${paidTotal}`),
             )
         );
     }
