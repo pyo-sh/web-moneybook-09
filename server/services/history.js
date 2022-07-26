@@ -1,9 +1,5 @@
 const HistoryModel = require("../models/history");
-const {
-    formatPropertyToSnake,
-    formatPropertyToCamel,
-    groupObjectByDate,
-} = require("../utils/format");
+const { formatPropertyToSnake, formatPropertyToCamel } = require("../utils/format");
 const { getFormatDate, getFormatDateByInterval, getYearDates } = require("../utils/time");
 
 module.exports = (function HistoryService() {
@@ -28,7 +24,7 @@ module.exports = (function HistoryService() {
         });
 
         const histories = dbResults.map(formatPropertyToCamel);
-        return groupObjectByDate(histories);
+        return histories;
     }
 
     async function editHistory(id, body) {
@@ -73,7 +69,7 @@ module.exports = (function HistoryService() {
             endDate,
         });
         const histories = dbResults.map(formatPropertyToCamel);
-        return groupObjectByDate(histories);
+        return histories;
     }
 
     return {
