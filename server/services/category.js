@@ -26,13 +26,10 @@ module.exports = (function CategoryService() {
     async function editCategory(id, body) {
         const data = formatPropertyToSnake(body);
 
-        const isSuccess = await CategoryModel.updateById({ id, data });
-        if (isSuccess) {
-            const category = await CategoryModel.findById({ id });
-            return formatPropertyToCamel(category);
-        } else {
-            throw Error("Edit Category : Error on CategoryModel.updateById");
-        }
+        await CategoryModel.updateById({ id, data });
+
+        const category = await CategoryModel.findById({ id });
+        return formatPropertyToCamel(category);
     }
 
     async function deleteCategory(id) {

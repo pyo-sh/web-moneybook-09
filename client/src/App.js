@@ -1,4 +1,5 @@
 import "./GlobalStyle.css";
+import "@src/App.css";
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
 import Header from "@components/Header";
@@ -18,9 +19,11 @@ export default class App extends Component {
             id: "root",
         })(
             new Header(),
-            Routes({ Component: Account, path: "/" }),
-            Routes({ Component: Calendar, path: "/calendar" }),
-            Routes({ Component: Statistic, path: "/statistic" }),
+            div({ class: "AppContainer" })(
+                Routes({ Component: Account, path: "/" }),
+                Routes({ Component: Calendar, path: "/calendar" }),
+                Routes({ Component: Statistic, path: "/statistic" }),
+            ),
         );
     }
 }

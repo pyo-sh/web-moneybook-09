@@ -3,8 +3,8 @@
     position: relative;
     display: flex;
     width: 904px;
-    position: absolute;
-    top: 0px;
+    /* position: absolute; */
+    /* top: 0px; */
     align-items: center;
     /* justify-content: space-around; */
     /* top에 해야됨-36px */
