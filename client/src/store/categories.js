@@ -3,6 +3,7 @@ import { getAllCategories } from "@apis/categoryApi";
 
 const state = makeObservable({
     value: {},
+    isLoading: true,
 });
 
 const fetchData = async () => {
@@ -24,6 +25,9 @@ const filterCategoryIds = (isIncome) => {
     return selectedIds;
 };
 
-fetchData();
+(async function () {
+    await fetchData();
+    state.isLoading = false;
+})();
 
 export default { fetchData, state, getCategoryById, filterCategoryIds };

@@ -9,7 +9,7 @@ export const state = makeObservable({
     category: null,
     id: null,
     isIncome: null,
-    isClick: false,
+    isChanged: false,
 });
 
 export const resetHistoryState = () => {
@@ -20,7 +20,7 @@ export const resetHistoryState = () => {
     state.category = null;
     state.id = null;
     state.isIncome = null;
-    state.isClick = false;
+    state.isChanged = true;
 };
 
 export default { state, resetHistoryState };

@@ -17,7 +17,7 @@ export default class Account extends Component {
                     selectedHistory.state.amount= "1000", //모두 문자열로
                     selectedHistory.state.id= 2,
                     selectedHistory.state.isIncome= false;
-                    selectedHistory.state.isClick = true;
+                    selectedHistory.state.isChanged = true;
                 } 
                 }})("이거 누르면 변함")
         );

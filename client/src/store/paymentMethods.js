@@ -3,6 +3,7 @@ import { getAllPaymentMethod } from "@apis/paymentMethodApi";
 
 const state = makeObservable({
     value: {},
+    isLoading: true,
 });
 
 const fetchData = async () => {
@@ -21,6 +22,9 @@ const getPaymentMethodIds = () => {
     return Object.keys(value);
 };
 
-fetchData();
+(async function () {
+    await fetchData();
+    state.isLoading = false;
+})();
 
 export default { fetchData, state, getPaymentMethodIds, getPaymentMethodById };
