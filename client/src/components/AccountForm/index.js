@@ -11,7 +11,6 @@ import { formatDate } from "./format";
 import { historyState } from "@store/historyState";
 import { compareObjects } from "@utils/compareObject";
 
-// 내용 150;;
 const ACTIVE_COLOR = "white";
 const PRIMARY_COLOR = "#2ac1bc";
 
@@ -25,18 +24,23 @@ export default class AccountForm extends Component {
         };
     }
 
+    bindState() {
+        return [historyState];
+    }
+
     initRef() {
         return {
             isAllValid: false,
             date: "2020.05.04", // 전역 date로 대체
             content: null,
             paymentMethod: null,
-            amount: null,
+            category: null,
             id: null,
+            amount: null,
         };
     }
 
-    activateSubmitBtn(isAllValid) {
+    toggleActiveSubmitBtn(isAllValid) {
         this.ref.isAllValid = isAllValid;
         const saveBtn = document.querySelector(".saveButton");
         saveBtn.classList.toggle("active", isAllValid);
@@ -48,15 +52,28 @@ export default class AccountForm extends Component {
         const isNotChanged = compareObjects(innerInputValues, historyState);
 
         if (isNotChanged) {
-            return;
+            return this.toggleActiveSubmitBtn(false);
         }
 
         const isAllValid = validateHistoryForm(innerInputValues);
-        this.activateSubmitBtn(isAllValid);
+        this.toggleActiveSubmitBtn(isAllValid);
     }
 
+    synchronize() {
+        Object.keys(this.ref).forEach((key) => {
+            if (historyState[key]) {
+                this.ref[key] = historyState[key];
+            }
+        });
+    }
     render() {
         const { ref, state } = this;
+
+        if (historyState.isClick) {
+            this.synchronize();
+            this.validateAll();
+            historyState.isClick = false;
+        }
 
         // prettier-ignore
         return form({ class: "accountForm", event: {validate: this.validateAll.bind(this) ,submit: (e)=>{
