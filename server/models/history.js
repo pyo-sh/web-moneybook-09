@@ -30,7 +30,9 @@ module.exports = (function HistoryModel() {
 
     async function findByRange({ startDate, endDate }) {
         const query = `
-            SELECT *
+            SELECT *, CONCAT(
+                YEAR(date), '.', LPAD(MONTH(date), 2, '0'), '.', LPAD(DAY(date), 2, '0')
+            ) AS date
             FROM ${TABLE_NAME}
             WHERE '${startDate}' <= date AND date < '${endDate}'
         `;
@@ -39,7 +41,9 @@ module.exports = (function HistoryModel() {
     }
     async function findByRangeAndCategory({ startDate, endDate, categoryId }) {
         const query = `
-            SELECT *
+            SELECT *, CONCAT(
+                YEAR(date), '.', LPAD(MONTH(date), 2, '0'), '.', LPAD(DAY(date), 2, '0')
+            ) AS date
             FROM ${TABLE_NAME}
             WHERE category = ${categoryId} AND
                 '${startDate}' <= date AND date < '${endDate}'
