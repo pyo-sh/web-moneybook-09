@@ -5,6 +5,7 @@ import histories from "@store/histories";
 import { getLocaleDate } from "@utils/date";
 import { formatAmount } from "@utils/format";
 import categories from "@store/categories";
+import paymentMethods from "@store/paymentMethods";
 
 export default class HistoryDetails extends Component {
     render() {
@@ -45,8 +46,15 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
     );
 };
 
-const HistoryItem = ({ category: categoryId, content, paymentMethod, amount, isIncome }) => {
+const HistoryItem = ({
+    category: categoryId,
+    content,
+    paymentMethod: paymentMethodId,
+    amount,
+    isIncome,
+}) => {
     const { name: categoryName, color: categoryColor } = categories.state.value[categoryId];
+    const { name: paymentMethodName } = paymentMethods.state.value[paymentMethodId];
 
     // prettier-ignore
     return li({ class: "item text_body_medium" })(
@@ -55,7 +63,7 @@ const HistoryItem = ({ category: categoryId, content, paymentMethod, amount, isI
             class: "itemCategory text_bold_medium",
         })(categoryName),
         div({ class: "itemContent" })(content),
-        div({ class: "itemPaymentMethod" })(paymentMethod),
+        div({ class: "itemPaymentMethod" })(paymentMethodName),
         div({ class: "itemAmount" })(`${(isIncome ? "" : "-")}${formatAmount(amount)}원`),
     );
 };

@@ -9,6 +9,7 @@ const state = makeObservable({
 const fetchData = async () => {
     const { paymentMethods } = await getAllPaymentMethod();
     state.value = paymentMethods;
+    state.isLoading = false;
 };
 
 const getPaymentMethodById = (id) => {
@@ -21,9 +22,10 @@ const getPaymentMethodIds = () => {
     return Object.keys(value);
 };
 
-(async function () {
+async function initPaymentMethods() {
+    state.isLoading = true;
     await fetchData();
-    state.isLoading = false;
-})();
+}
+initPaymentMethods();
 
 export default { fetchData, state, getPaymentMethodIds, getPaymentMethodById };
