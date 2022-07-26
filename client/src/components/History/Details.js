@@ -1,7 +1,8 @@
 import Component from "@core/Component";
 import "@components/History/Details.css";
-import { div, h4, lh, li, span, ul } from "@core/CreateDom";
+import { div, h4, lh, li, section, span, ul } from "@core/CreateDom";
 import histories from "@store/histories";
+import { getLocaleDate } from "@utils/date";
 
 export default class HistoryDetails extends Component {
     render() {
@@ -16,7 +17,7 @@ export default class HistoryDetails extends Component {
             return doms;
         }, []);
         // prettier-ignore
-        return ul({ class: "HistoryDetail" })(
+        return ul({ class: "historyDetail" })(
             ...Details
         );
     }
@@ -25,10 +26,15 @@ export default class HistoryDetails extends Component {
 const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
     const showIncome = showTotal && incomeTotal ? undefined : false;
     const showPaid = showTotal && paidTotal ? undefined : false;
+
+    const [localDate, day] = getLocaleDate(date);
     // prettier-ignore
-    return lh(
-        h4(date),
-        div(
+    return lh({ class: "info text_bold_medium" })(
+        h4(
+            span({ class: "infoLocaleDate" })(localDate),
+            span({ class: "infoDay" })(day),
+        ),
+        section({ class: "totals" })(
             showIncome ?? span("수입"),
             showIncome ?? span(incomeTotal),
             showPaid ?? span("지출"),
@@ -39,10 +45,13 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
 
 const HistoryItem = ({ category, content, paymentMethod, amount, isIncome }) => {
     // prettier-ignore
-    return li(
-        div(category),
-        div(content),
-        div(paymentMethod),
-        div(amount * (isIncome ? 1 : -1)),
+    return li({ class: "item text_body_medium" })(
+        div({
+            style: `background-color: ${""}`,
+            class: "itemCategory text_bold_medium",
+        })(category),
+        div({ class: "itemContent" })(content),
+        div({ class: "itemPaymentMethod" })(paymentMethod),
+        div({ class: "itemAmount" })(`${amount * (isIncome ? 1 : -1)}원`),
     );
 };
