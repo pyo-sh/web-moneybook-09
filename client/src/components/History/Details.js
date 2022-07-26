@@ -8,7 +8,7 @@ export default class HistoryDetails extends Component {
     render() {
         const { filteredHistories, showTotal } = this.props;
         const groupedHistories = histories.groupHistoriesByDate(filteredHistories);
-        const dates = Object.keys(groupedHistories).sort();
+        const dates = Object.keys(groupedHistories).sort().reverse();
 
         const Details = dates.reduce((doms, date) => {
             const { histories: details, incomeTotal, paidTotal } = groupedHistories[date];
