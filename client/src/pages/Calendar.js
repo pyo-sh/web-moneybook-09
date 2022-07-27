@@ -75,11 +75,9 @@ const TableLines = (dateItems) => {
 
                 return td(
                     div({ class: "tableItem" })(
-                        div(
                             div({ class: "incomeItem" })(formatAmount(incomeTotal)),
                             div({ class: "paidItem" })(formatAmount(-paidTotal)),
                             div({ class: "totalItem" })(formatAmount(total)),
-                        ),
                         div({ class: "dayItem text_bold_small" })(Number(key.slice(8))),
                     ),
                 );

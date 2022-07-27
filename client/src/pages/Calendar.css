@@ -50,6 +50,8 @@
 
     border-right: 1px solid var(--color-Line);
     border-bottom: 1px solid var(--color-Line);
+
+    overflow: hidden;
 }
 .calendar .calendarBody td:last-child {
     border-right: none;
@@ -62,8 +64,7 @@
     width: 100%;
     height: 100%;
     padding: 8px;
-    display: flex;
-    flex-direction: column;
+    position: relative;
 }
 .calendar .incomeItem {
     color: var(--color-Primary);
@@ -72,10 +73,11 @@
     color: var(--color-Error);
 }
 .calendar .dayItem {
-    margin-top: auto;
-    text-align: end;
     color: var(--color-Label);
     font-size: 14px;
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
 }
 
 .calendar .footer {
