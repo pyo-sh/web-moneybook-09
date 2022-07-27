@@ -11,7 +11,7 @@
 .appContainer {
     width: 100%;
     margin-top: -32px;
-    flex: 0 0 auto;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,13 +34,14 @@
     }
 }
 .appLoadContainer .spinner {
-    width: 300px;
-    height: 300px;
+    width: 100px;
+    height: 100px;
+    opacity: 0.5;
 
-    border: 35px solid var(--color-Line);
-    border-top: 35px solid var(--color-Primary);
+    border: 12px solid var(--color-Line);
+    border-top: 12px solid var(--color-Primary);
     border-radius: 50%;
 
-    -webkit-animation: spin 1s linear infinite;
-    animation: spin 1s linear infinite;
+    -webkit-animation: spin 1s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
+    animation: spin 1s cubic-bezier(0.68, -0.6, 0.32, 1.6) infinite;
 }

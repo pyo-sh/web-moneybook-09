@@ -38,9 +38,10 @@ export const formatAmount = (value) => {
     if (!value) {
         return "";
     }
+    const minus = value < 0 ? "-" : "";
     value = String(value);
     const digitString = value.replace(/[^0-9]/g, "");
     const formattedAmount = digitString ? Number(digitString).toLocaleString() : "";
 
-    return formattedAmount;
+    return `${minus}${formattedAmount}`;
 };
