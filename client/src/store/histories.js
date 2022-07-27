@@ -68,6 +68,24 @@ const groupHistoriesByDate = (array) => {
     }, {});
 };
 
+
+const groupPaymentSumByCategory = () => {
+    if (state.details.length === 0) {
+        return;
+    }
+    return state.details
+        .filter((detail) => detail.isIncome === 0)
+        .reduce((historySumMap, history) => {
+            const { category, amount } = history;
+            if (category in historySumMap) {
+                historySumMap[category] += amount;
+            } else {
+                historySumMap[category] = amount;
+            }
+            return historySumMap;
+        }, {});
+};
+
 const historiesUpdate = (newHistory) => {
     const newHistories = state.details.filter(({ id }) => newHistory.id !== id);
     state.details = [newHistory, ...newHistories];
@@ -78,5 +96,6 @@ export default {
     getFilteredHistories,
     getTotals,
     groupHistoriesByDate,
+    groupPaymentSumByCategory,
     historiesUpdate,
 };
