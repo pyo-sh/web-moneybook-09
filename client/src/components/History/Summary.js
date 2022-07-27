@@ -3,6 +3,7 @@ import "@components/History/Summary.css";
 import { button, div, h3, section, span } from "@core/CreateDom";
 import histories from "@store/histories";
 import checkIcon from "@icons/check";
+import { formatAmount } from "@utils/format";
 
 const WHITE = "#ffffff";
 const TRANSPARENT = "transparent";
@@ -22,7 +23,9 @@ export default class HistorySummary extends Component {
 
         // prettier-ignore
         return div({ class: "historySummary" })(
-            h3({ class: "text_body_large" })(`전체 내역 ${filteredHistories?.length ?? 0}건`),
+            h3({ class: "text_body_large" })(
+                `전체 내역 ${formatAmount(filteredHistories?.length) || 0}건`
+            ),
             section({
                 class: "controller text_body_medium",
                 event: { click: toggleIsSelected },
@@ -33,14 +36,14 @@ export default class HistorySummary extends Component {
                 })(
                     checkIcon(incomeIconColor, 16, 16)
                 ),
-                span({ class: incomeAmountClass })(`수입 ${incomeTotal}`),
+                span({ class: incomeAmountClass })(`수입 ${formatAmount(incomeTotal) || "0"}`),
                 button({
                     id: "paidToggle",
                     class: `toggleButton ${paidButtonClass}`,
                 })(
                     checkIcon(paidIconColor, 16, 16)
                 ),
-                span({ class: paidAmountClass })(`지출 ${paidTotal}`),
+                span({ class: paidAmountClass })(`지출 ${formatAmount(paidTotal) || "0"}`),
             )
         );
     }

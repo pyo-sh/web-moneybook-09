@@ -28,7 +28,6 @@ export const { makeObservable, subscribe } = (function () {
                         }
                     });
                 }
-
                 return true;
             },
         });

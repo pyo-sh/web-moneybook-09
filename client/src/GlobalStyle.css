@@ -109,7 +109,6 @@ video {
     border: 0;
     font-size: 100%;
     font: inherit;
-    vertical-align: baseline;
 }
 
 ol,
@@ -150,13 +149,6 @@ body {
     font-size: 24px;
     line-height: 24px;
 }
-.text_body_medium {
-    font-family: "Noto Sans KR";
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 24px;
-}
 
 .text_body_regular {
     font-family: "Noto Sans KR";
@@ -165,7 +157,13 @@ body {
     font-size: 16px;
     line-height: 24px;
 }
-
+.text_body_medium {
+    font-family: "Noto Sans KR";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 24px;
+}
 .text_body_large {
     font-family: "Noto Sans KR";
     font-style: normal;

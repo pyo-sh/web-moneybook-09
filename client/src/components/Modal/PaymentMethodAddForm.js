@@ -7,9 +7,8 @@ const PaymentMethodAddForm = () => {
     const submit = async (event) => {
         event.preventDefault();
         const { value } = event.target.input;
-        await addPaymentMethod(value);
-
-        paymentMethods.fetchData();
+        const data = await addPaymentMethod(value);
+        paymentMethods.paymentMethodsUpdate(data);
         modal.close();
     };
 

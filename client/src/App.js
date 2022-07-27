@@ -8,13 +8,27 @@ import Calendar from "@pages/Calendar";
 import Statistic from "@pages/Statistic";
 import controlDate from "@store/controlDate";
 import histories from "@store/histories";
+import loader from "@store/loader";
 
 export default class App extends Component {
     bindState() {
-        return [pageState, controlDate.state, histories.state];
+        return [pageState, loader.state, controlDate.state, histories.state];
     }
 
     render() {
+        if (loader.isLoading()) {
+            // prettier-ignore
+            return div({
+                id: "root",
+            })(
+                new Header(),
+                div({ class: "appLoadContainer" })(
+                    div({ class: "spinner" })(),
+                ),
+            );
+        }
+
+        // prettier-ignore
         return div({
             id: "root",
         })(

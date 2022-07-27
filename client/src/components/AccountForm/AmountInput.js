@@ -1,6 +1,6 @@
 import { div, label, button, input, span } from "@core/CreateDom";
 import { validateEvent } from "./customEvent";
-import { formatAmount } from "./format";
+import { formatAmount } from "@utils/format";
 
 const AmountInput = ({ ref, state }) => {
     const toggleIsIncome = ({ currentTarget }) => {

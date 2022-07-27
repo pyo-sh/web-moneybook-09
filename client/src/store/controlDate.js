@@ -1,4 +1,4 @@
-import { formatDate, formatDateToString } from "@components/AccountForm/format";
+import { formatDate, formatDateToString } from "@utils/format";
 import { makeObservable } from "@core/Observer";
 import { changeDateMonth } from "@utils/date";
 

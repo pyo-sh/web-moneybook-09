@@ -4,5 +4,5 @@ export const compareObjects = (object1, object2) => {
     const sameKeys = [...properties].filter(
         (p) => object1.hasOwnProperty(p) && object2.hasOwnProperty(p),
     );
-    return sameKeys.every((key) => object1[key] === object2[key]);
+    return sameKeys.every((key) => object1[key] == object2[key]);
 };

@@ -9,7 +9,7 @@ const checkCategoryTable = (pool) => {
                 name VARCHAR(30),
                 color VARCHAR(9),
                 is_income BOOLEAN
-              );
+            );
         `,
         )
         .then(() => {

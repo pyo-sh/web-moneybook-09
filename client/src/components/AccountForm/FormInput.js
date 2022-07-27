@@ -3,12 +3,11 @@ import { validateEvent } from "./customEvent";
 
 const FormInput = ({
     ref,
-    validate,
     format = (value) => value,
     key,
     placeholder,
     labelText,
-    maxlength = 150,
+    maxLength = 150,
 }) => {
     const setInputValue = ({ currentTarget }) => {
         ref[key] = format(currentTarget.value);
@@ -20,7 +19,7 @@ const FormInput = ({
         div({ class: `inputItem ${key}` })(
             label({ class: "text_bold_small label" })(labelText),
             input({
-                maxlength,
+                maxLength,
                 class: "text_body_regular",
                 placeholder: placeholder,
                 value: format(ref[key]) || "",

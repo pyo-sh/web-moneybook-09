@@ -1,8 +1,7 @@
 /**
- *
+ * 숫자를 yyyy.mm.dd로 바꿔준다.
  * @param {} value
  * @returns
- * 숫자를 yyyy.mm.dd로 바꿔준다.
  */
 export const formatDate = (value) => {
     return value
@@ -12,10 +11,9 @@ export const formatDate = (value) => {
 };
 
 /**
- *
+ * date객체를 yyyymmdd로 바꾼다.
  * @param {*} date
  * @returns
- * date객체를 yyyymmdd로 바꾼다.
  */
 export function formatDateToString(date) {
     let month = `${date.getMonth() + 1}`;
@@ -32,18 +30,18 @@ export function formatDateToString(date) {
 }
 
 /**
- *
- * @param {*} value
- * @returns
  * input value를 원 단위로 포멧팀 한다.
+ * @param {*} value
+ * @returns 1,000,000
  */
 export const formatAmount = (value) => {
     if (!value) {
         return "";
     }
+    const minus = value < 0 ? "-" : "";
     value = String(value);
     const digitString = value.replace(/[^0-9]/g, "");
     const formattedAmount = digitString ? Number(digitString).toLocaleString() : "";
 
-    return formattedAmount;
+    return `${minus}${formattedAmount}`;
 };
