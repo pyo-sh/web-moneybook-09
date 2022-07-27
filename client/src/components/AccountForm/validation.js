@@ -1,11 +1,12 @@
-import { formatDateToString } from "./format";
+import paymentMethods from "@store/paymentMethods";
+import { formatDateToString } from "@utils/format";
+
 const CONTENT_MAX_LENGTH = 150;
 
 /**
- *
+ * yyyy.mm.dd 형태의 string이 실제 date와 같은지 알려준다.
  * @param {} value
  * @returns
- * yyyy.mm.dd 형태의 string이 실제 date와 같은지 알려준다.
  */
 export const validateDate = (value) => {
     const dateRegex = /^(\d{4})\.(\d{2})\.(\d{2})$/g;
@@ -23,7 +24,7 @@ export const validateAmount = (value) => Number(value) > 0;
 
 export const validateContent = (value) => value && value.length < CONTENT_MAX_LENGTH;
 
-export const validatePaymentMethod = (value) => value;
+export const validatePaymentMethod = (value) => value && paymentMethods.getPaymentMethodById(value);
 
 export const validateIsIncome = (value) => value !== null;
 

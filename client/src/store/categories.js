@@ -1,14 +1,16 @@
 import { makeObservable } from "@core/Observer";
 import { getAllCategories } from "@apis/categoryApi";
+import loader from "@store/loader";
 
 const state = makeObservable({
     value: {},
-    isLoading: true,
 });
 
 const fetchData = async () => {
+    loader.state.isCategoriesLoading = true;
     const { categories } = await getAllCategories();
     state.value = categories;
+    loader.state.isCategoriesLoading = false;
 };
 
 const getCategoryById = (id) => {
@@ -24,9 +26,8 @@ const filterCategoryIds = (isIncome) => {
     return selectedIds;
 };
 
-(async function () {
+(async function initCategories() {
     await fetchData();
-    state.isLoading = false;
 })();
 
-export default { fetchData, state, getCategoryById, filterCategoryIds };
+export default { state, fetchData, getCategoryById, filterCategoryIds };

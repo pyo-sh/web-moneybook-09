@@ -3,6 +3,9 @@ import "@components/History/Details.css";
 import { div, h4, lh, li, span, ul } from "@core/CreateDom";
 import histories from "@store/histories";
 import { getLocaleDate } from "@utils/date";
+import { formatAmount } from "@utils/format";
+import categories from "@store/categories";
+import paymentMethods from "@store/paymentMethods";
 
 export default class HistoryDetails extends Component {
     render() {
@@ -36,22 +39,32 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
         ),
         div({ class: "totals" })(
             showIncome ?? span("수입"),
-            showIncome ?? span(incomeTotal),
+            showIncome ?? span(formatAmount(incomeTotal)),
             showPaid ?? span("지출"),
-            showPaid ?? span(paidTotal),
+            showPaid ?? span(formatAmount(paidTotal)),
         ),
     );
 };
 
-const HistoryItem = ({ category, content, paymentMethod, amount, isIncome }) => {
+const HistoryItem = ({
+    id,
+    category: categoryId,
+    content,
+    paymentMethod: paymentMethodId,
+    amount,
+    isIncome,
+}) => {
+    const { name: categoryName, color: categoryColor } = categories.state.value[categoryId] ?? {};
+    const { name: paymentMethodName } = paymentMethods.state.value[paymentMethodId] ?? {};
+
     // prettier-ignore
-    return li({ class: "item text_body_medium" })(
+    return li({ class: "item text_body_medium", "data-id": id })(
         div({
-            style: `background-color: ${""}`,
+            style: `background-color: ${categoryColor}`,
             class: "itemCategory text_bold_medium",
-        })(category),
+        })(categoryName),
         div({ class: "itemContent" })(content),
-        div({ class: "itemPaymentMethod" })(paymentMethod),
-        div({ class: "itemAmount" })(`${amount * (isIncome ? 1 : -1)}원`),
+        div({ class: "itemPaymentMethod" })(paymentMethodName),
+        div({ class: "itemAmount" })(`${(isIncome ? "" : "-")}${formatAmount(amount)}원`),
     );
 };

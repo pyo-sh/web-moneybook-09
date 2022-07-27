@@ -12,9 +12,9 @@ const checkHistoryTable = (pool) => {
                 payment_method INT,  
                 content VARCHAR(150),
                 amount INT,
-                FOREIGN KEY(payment_method) REFERENCES payment_method(id) ON UPDATE CASCADE,
-                FOREIGN KEY(category) REFERENCES category(id) ON UPDATE CASCADE
-              );
+                FOREIGN KEY(payment_method) REFERENCES payment_method(id),
+                FOREIGN KEY(category) REFERENCES category(id)
+            );
         `,
         )
         .then(() => {

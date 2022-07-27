@@ -4,8 +4,6 @@ import modal from "@store/modal";
 import paymentMethods from "@store/paymentMethods";
 import { validateEvent } from "./customEvent";
 
-// const paymentMethods = ["현금", "체크카드", "현대카드"];
-
 const PaymentDropdownPanel = ({ state, ref }) => {
     const paymentMethodIds = paymentMethods.getPaymentMethodIds();
 
