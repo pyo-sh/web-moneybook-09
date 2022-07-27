@@ -2,22 +2,22 @@ import { makeObservable, subscribe } from "@core/Observer";
 import { getHistoriesByMonth } from "@apis/history";
 import controlDate from "@store/controlDate";
 import { getYearMonth } from "@utils/date";
+import loader from "@store/loader";
 
 const state = makeObservable({
     details: [],
-    isLoading: true,
 });
 
 async function initState() {
     state.details = [];
-    state.isLoading = true;
+    loader.state.isHistoriesLoading = true;
 
     const currentDate = controlDate.state.value;
     const dateString = getYearMonth(currentDate);
 
     const { histories } = await getHistoriesByMonth({ query: { date: dateString } });
     state.details = histories;
-    state.isLoading = false;
+    loader.state.isHistoriesLoading = false;
 }
 
 subscribe(controlDate.state, initState);
@@ -70,7 +70,7 @@ const groupHistoriesByDate = (array) => {
 
 const historiesUpdate = (newHistory) => {
     const newHistories = state.details.filter(({ id }) => newHistory.id !== id);
-    state.details = [...newHistories, newHistory];
+    state.details = [newHistory, ...newHistories];
 };
 
 export default {

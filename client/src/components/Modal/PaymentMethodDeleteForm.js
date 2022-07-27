@@ -4,13 +4,13 @@ import { button, div, form, ul } from "@core/CreateDom";
 import modal from "@store/modal";
 import paymentMethods from "@store/paymentMethods";
 
-const PaymentMethodDeleteForm = (value) => {
-    const paymentMethodValue = paymentMethods.getPaymentMethodById(value);
+const PaymentMethodDeleteForm = (id) => {
+    const paymentMethodValue = paymentMethods.getPaymentMethodById(id);
 
     const submit = async (event) => {
         event.preventDefault();
-        await deletePaymentMethod(value);
-        paymentMethods.fetchData();
+        await deletePaymentMethod(id);
+        paymentMethods.paymentMethodsDelete(id);
         modal.close();
     };
 

@@ -1,3 +1,4 @@
+import paymentMethods from "@store/paymentMethods";
 import { formatDateToString } from "@utils/format";
 
 const CONTENT_MAX_LENGTH = 150;
@@ -23,7 +24,7 @@ export const validateAmount = (value) => Number(value) > 0;
 
 export const validateContent = (value) => value && value.length < CONTENT_MAX_LENGTH;
 
-export const validatePaymentMethod = (value) => value;
+export const validatePaymentMethod = (value) => value && paymentMethods.getPaymentMethodById(value);
 
 export const validateIsIncome = (value) => value !== null;
 

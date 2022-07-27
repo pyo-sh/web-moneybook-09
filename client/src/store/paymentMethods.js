@@ -1,20 +1,25 @@
 import { makeObservable } from "@core/Observer";
 import { getAllPaymentMethod } from "@apis/paymentMethodApi";
+import loader from "@store/loader";
 
 const state = makeObservable({
     value: {},
-    isLoading: true,
 });
 
 const fetchData = async () => {
+    loader.state.isPaymentMethodsLoading = true;
     const { paymentMethods } = await getAllPaymentMethod();
     state.value = paymentMethods;
-    state.isLoading = false;
+    loader.state.isPaymentMethodsLoading = false;
 };
 
 const getPaymentMethodById = (id) => {
     const { value } = state;
-    return id ? value[id]["name"] : undefined;
+    if (id === null) {
+        return undefined;
+    }
+    const paymentMethod = value[id];
+    return (paymentMethod || {}).name;
 };
 
 const getPaymentMethodIds = () => {
@@ -22,10 +27,27 @@ const getPaymentMethodIds = () => {
     return Object.keys(value);
 };
 
+const paymentMethodsUpdate = (newPaymentMethod) => {
+    delete state.value[newPaymentMethod.id];
+    state.value = { [newPaymentMethod.id]: newPaymentMethod, ...state.value };
+};
+
+const paymentMethodsDelete = (newPaymentMethodId) => {
+    const newPaymentMethods = { ...state.value };
+    delete newPaymentMethods[newPaymentMethodId];
+    state.value = { ...newPaymentMethods };
+};
+
 async function initPaymentMethods() {
-    state.isLoading = true;
     await fetchData();
 }
 initPaymentMethods();
 
-export default { fetchData, state, getPaymentMethodIds, getPaymentMethodById };
+export default {
+    fetchData,
+    state,
+    getPaymentMethodIds,
+    getPaymentMethodById,
+    paymentMethodsUpdate,
+    paymentMethodsDelete,
+};
