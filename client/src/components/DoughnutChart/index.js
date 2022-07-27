@@ -2,7 +2,7 @@ import Component from "@core/Component";
 import { canvas } from "@core/CreateDom";
 import categories from "@store/categories";
 
-const SPACE_COLOR = "#f5f5f5";
+const SPACE_COLOR = "white";
 // const SPACE_COLOR = "black";
 
 export default class DoughnutChart extends Component {
@@ -14,10 +14,11 @@ export default class DoughnutChart extends Component {
 
     init() {
         this.canvas = this.element;
-        this.canvas.style.width = "300px";
-        this.canvas.style.height = "300px";
-        this.canvas.width = 1000;
-        this.canvas.height = 1000;
+        this.canvas.size = 255;
+        this.canvas.style.width = `${this.canvas.size}px`;
+        this.canvas.style.height = `${this.canvas.size}px`;
+        this.canvas.width = this.canvas.size * 2;
+        this.canvas.height = this.canvas.size * 2;
         this.ctx = this.canvas.getContext("2d");
 
         this.reconciliationValue = 0.005;
@@ -158,6 +159,6 @@ export default class DoughnutChart extends Component {
     }
 
     render() {
-        return canvas({ width: 300, height: 300, event: {} })();
+        return canvas({ id: "doughnutChart" })();
     }
 }
