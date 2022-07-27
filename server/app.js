@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
 require("./db/loader");
-// require("./db/dataLoader");
+require("./db/dataLoader");
 
 const app = express();
 

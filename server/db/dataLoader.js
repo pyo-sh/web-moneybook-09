@@ -16,4 +16,6 @@ const checkCategoryTable = require("./checkTable/category");
     console.log("ALL TABLE CHECKED!");
 
     await insertMock();
+
+    process.exit(1);
 })();
