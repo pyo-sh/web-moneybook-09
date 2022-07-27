@@ -15,17 +15,20 @@ export const { makeObservable, subscribe } = (function () {
                 const handlerSet = observerMap.get(receiver);
                 const isChange = target[property] !== value;
 
-                if (!(handlerSet && isChange)) {
+                if (!isChange) {
                     return true;
                 }
 
                 Reflect.set(...arguments);
-                handlerSet.forEach((handler) => {
-                    const isSuccess = handler();
-                    if (!isSuccess) {
-                        handlerSet.delete(handler);
-                    }
-                });
+                if (handlerSet) {
+                    handlerSet.forEach((handler) => {
+                        const isSuccess = handler();
+                        if (!isSuccess) {
+                            handlerSet.delete(handler);
+                        }
+                    });
+                }
+
                 return true;
             },
         });

@@ -24,9 +24,14 @@ const filterCategoryIds = (isIncome) => {
     return selectedIds;
 };
 
+const getCategoryColorById = (id) => {
+    const { value } = state;
+    return id ? value[id]["color"] : undefined;
+};
+
 (async function () {
     await fetchData();
     state.isLoading = false;
 })();
 
-export default { fetchData, state, getCategoryById, filterCategoryIds };
+export default { fetchData, state, getCategoryColorById, getCategoryById, filterCategoryIds };
