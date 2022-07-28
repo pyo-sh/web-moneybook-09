@@ -14,7 +14,7 @@ const CategoryDropdownPanel = ({ state, ref }) => {
             e.currentTarget.dispatchEvent(validateEvent);
         };
 
-        const category = categories.getCategoryById(categoryId);
+        const category = categories.getCategoryNameById(categoryId);
 
         return div({ class: "panelItemContainer" })(
             div({
@@ -31,7 +31,7 @@ const CategoryDropdownPanel = ({ state, ref }) => {
 
 const CategoryDropdown = ({ state, ref }) => {
     const categoryId = ref.category;
-    const category = categories.getCategoryById(categoryId);
+    const category = categories.getCategoryNameById(categoryId);
 
     const toggleIsClick = () => {
         state.isCategoryClick = !state.isCategoryClick;

@@ -1,20 +1,12 @@
 import Component from "@core/Component";
-import { div } from "@core/CreateDom";
-import DoughnutChart from "@components/DoughnutChart";
-import histories from "@store/histories";
+import { section } from "@core/CreateDom";
+import "./Statistic.css";
+import PaymentReport from "@components/PaymentReport";
 
 export default class Statistic extends Component {
     getSum() {}
 
     render() {
-        const historySumMap = histories.groupPaymentSumByCategory();
-
-        if (!historySumMap) {
-            return "";
-        }
-
-        const totalExpenditure = Object.values(historySumMap).reduce((prev, cur) => prev + cur, 0);
-
-        return div(new DoughnutChart({ totalExpenditure, historySumMap }));
+        return section({ class: "statisticWrapper" })(new PaymentReport());
     }
 }

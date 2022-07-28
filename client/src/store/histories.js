@@ -3,6 +3,7 @@ import { getHistoriesByMonth } from "@apis/history";
 import controlDate from "@store/controlDate";
 import { getYearMonth } from "@utils/date";
 import loader from "@store/loader";
+import categories from "./categories";
 
 const state = makeObservable({
     details: [],
@@ -68,12 +69,17 @@ const groupHistoriesByDate = (array) => {
     }, {});
 };
 
-
 const groupPaymentSumByCategory = () => {
-    if (state.details.length === 0) {
-        return;
-    }
-    return state.details
+    const categoryList = categories.state.value;
+
+    const historyMapTemplate = Object.entries(categoryList).reduce((returnObj, [id, category]) => {
+        if (category["isIncome"] === 0) {
+            returnObj[id] = 0;
+        }
+        return returnObj;
+    }, {});
+
+    const historyMap = state.details
         .filter((detail) => detail.isIncome === 0)
         .reduce((historySumMap, history) => {
             const { category, amount } = history;
@@ -83,7 +89,13 @@ const groupPaymentSumByCategory = () => {
                 historySumMap[category] = amount;
             }
             return historySumMap;
-        }, {});
+        }, historyMapTemplate);
+
+    const sortedPayment = Object.entries(historyMap).sort(
+        ([keyA, sumA], [keyB, sumB]) => sumB - sumA,
+    );
+
+    return sortedPayment;
 };
 
 const historiesUpdate = (newHistory) => {

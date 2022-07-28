@@ -13,9 +13,14 @@ const fetchData = async () => {
     loader.state.isCategoriesLoading = false;
 };
 
-const getCategoryById = (id) => {
+const getCategoryNameById = (id) => {
     const { value } = state;
     return id ? value[id]["name"] : undefined;
+};
+
+const getCategoryById = (id) => {
+    const { value } = state;
+    return value[id];
 };
 
 const filterCategoryIds = (isIncome) => {
@@ -35,6 +40,11 @@ const getCategoryColorById = (id) => {
     await fetchData();
 })();
 
-
-export default { fetchData, state, getCategoryColorById, getCategoryById, filterCategoryIds };
-
+export default {
+    fetchData,
+    state,
+    getCategoryById,
+    getCategoryColorById,
+    getCategoryNameById,
+    filterCategoryIds,
+};
