@@ -95,7 +95,10 @@ export default class LineChart extends Component {
         const { monthDistance } = this.measurement;
 
         this.linearFunctions = [];
+        this.slopes = [];
         const maxIndex = this.sumPointYs.length - 1;
+        this.maxIndex = maxIndex;
+
         for (let i = 0; i < maxIndex; i++) {
             const x1 = i * monthDistance;
             const y1 = this.sumPointYs[i];
@@ -104,11 +107,12 @@ export default class LineChart extends Component {
             const slope = (y2 - y1) / monthDistance;
             const yIntercept = y1 - slope * x1;
 
+            // 실제 기울기는 -1을 곱해야한다.
+            this.slopes.push(-1 * slope);
             this.linearFunctions.push((x) => {
                 return slope * x + yIntercept;
             });
         }
-
         this.linearFunction = (x) => {
             const xIndex = Math.min(Math.floor(x / monthDistance), maxIndex - 1);
 
@@ -137,11 +141,11 @@ export default class LineChart extends Component {
         barCanvas.closePath();
     }
 
-    drawText(text, pointX, pointY, color, isBold = false) {
+    drawText(text, pointX, pointY, color, isBold = false, textAlign = "center") {
         const barCanvas = this.ctx;
         barCanvas.font = `${isBold ? "bold " : ""}${CANVAS_FONT_SIZE}px Noto Sans KR`;
         barCanvas.fillStyle = color;
-        barCanvas.textAlign = "center";
+        barCanvas.textAlign = textAlign;
         barCanvas.fillText(text, pointX, pointY);
     }
 
@@ -176,9 +180,77 @@ export default class LineChart extends Component {
         });
     }
 
-    animate() {
+    /**
+     * 보정 값을 계산한다.
+     */
+    calculateLabelPosition(index) {
+        // MOVE_Y만큼 위아래로 움직인다.
+        const MOVE_Y = 75;
+        let deltaY = 0;
+        let textAlign = "center";
+        const currentSlope = this.slopes[index];
+
+        // 양끝 예외 처리
+        if (index === 0) {
+            textAlign = "left";
+            if (currentSlope > 0) {
+                deltaY = MOVE_Y;
+            } else {
+                deltaY = -1 * MOVE_Y;
+            }
+            return { deltaY, textAlign };
+        }
+
+        // 양끝 예외처리
+        if (index === this.maxIndex) {
+            const prevSlope = this.slopes[index - 1];
+            textAlign = "right";
+            if (prevSlope > 0) {
+                deltaY = -1 * MOVE_Y;
+            } else {
+                deltaY = MOVE_Y;
+            }
+            return { deltaY, textAlign };
+        }
+
+        const prevSlope = this.slopes[index - 1];
+        const isSameSign = prevSlope * currentSlope >= 0;
+
+        if (isSameSign) {
+            if (prevSlope > 0) {
+                textAlign = "right";
+                deltaY = -MOVE_Y;
+            } else {
+                textAlign = "left";
+                deltaY = -MOVE_Y;
+            }
+        } else {
+            if (prevSlope > 0) {
+                deltaY = -MOVE_Y;
+            } else {
+                deltaY = MOVE_Y;
+            }
+        }
+
+        return { deltaY, textAlign };
+    }
+
+    drawLabelText(text, pointX, pointY, isToday, index) {
+        const { deltaY, textAlign } = this.calculateLabelPosition(index);
         const COLOR_CATEGORY = categories.getCategoryColorById(recentSum.state.category);
         const COLOR_LABEL = ROOT_STYLE.getPropertyValue("--color-Label");
+
+        this.drawText(
+            text,
+            pointX,
+            pointY + deltaY,
+            isToday ? COLOR_CATEGORY : COLOR_LABEL,
+            isToday,
+            textAlign,
+        );
+    }
+    animate() {
+        const COLOR_CATEGORY = categories.getCategoryColorById(recentSum.state.category);
 
         /* Clear Canvas */
         const { width, height, monthDistance } = this.measurement;
@@ -202,13 +274,8 @@ export default class LineChart extends Component {
             const isToday = this.isIndexToday(i);
 
             this.drawCircle(currentX + minX, currentY, COLOR_CATEGORY);
-            this.drawText(
-                sumValues[i],
-                currentX + minX,
-                currentY,
-                isToday ? COLOR_CATEGORY : COLOR_LABEL,
-                isToday,
-            );
+
+            this.drawLabelText(sumValues[i], currentX + minX, currentY, isToday, i);
 
             const isLastIndex = i === updateIndex;
 
