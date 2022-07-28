@@ -1,9 +1,9 @@
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
-import DoughnutChart from "@components/DoughnutChart";
+import "@components/statistic/paymentReport/index.css";
+import DoughnutChart from "@components/Statistic/DoughnutChart";
 import histories from "@store/histories";
 import StatisticTable from "./StatisticTable";
-import "./paymentReport.css";
 
 export default class PaymentReport extends Component {
     render() {
