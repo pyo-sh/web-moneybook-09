@@ -1,21 +1,34 @@
-import { makeObservable } from "@core/Observer";
+import { makeObservable, subscribe } from "@core/Observer";
 import { getRecentSumsByCategory } from "@apis/history";
 import { getYearMonth } from "@utils/date";
+import controlDate from "./controlDate";
 
 const state = makeObservable({
     value: {},
+    isLoading: true,
+    category: 0,
 });
 
-async function fetchData({ category, date }) {
+function clearData() {
+    state.isLoading = true;
     state.value = {};
+    state.category = 0;
+}
+subscribe(controlDate.state, clearData);
 
-    const currentDate = new Date(date.replaceAll(".", "-"));
+async function fetchData({ category }) {
+    clearData();
+    state.category = category;
+
+    const currentDate = controlDate.state.value;
     const dateString = getYearMonth(currentDate);
 
-    const { recentSums } = await getRecentSumsByCategory({
+    const { statistics } = await getRecentSumsByCategory({
         query: { date: dateString, category },
     });
-    state.value = recentSums;
+
+    state.value = statistics;
+    state.isLoading = false;
 }
 
 export default {
