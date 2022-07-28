@@ -138,7 +138,13 @@ export default class DoughnutChart extends Component {
     drawPieSlice(radius, startAngle, endAngle, color) {
         this.ctx.beginPath();
         this.ctx.moveTo(this.centerX, this.centerY);
-        this.ctx.arc(this.centerX, this.centerY, radius, startAngle, endAngle);
+        this.ctx.arc(
+            this.centerX,
+            this.centerY,
+            radius,
+            startAngle - Math.PI / 2,
+            endAngle - Math.PI / 2,
+        );
         this.ctx.fillStyle = color;
         this.ctx.fill();
         this.ctx.closePath();
