@@ -69,7 +69,7 @@ export default class DoughnutChart extends Component {
 
         // const updatedRadian = this.currentRadian + delta;
         const updatedRadian = this.calculateNextRadian();
-        this.updatedRadian = updatedRadian > this.maxRadian ? this.maxRadian : updatedRadian;
+        this.updatedRadian = Math.min(this.maxRadian, updatedRadian);
         this.color = this.getCurrentColor();
 
         this.draw();
