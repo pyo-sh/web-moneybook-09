@@ -195,15 +195,13 @@ export default class LineChart extends Component {
         const updateIndex = Math.floor(updateX / monthDistance);
         const { sumValues, linearFunction } = this;
 
+        let i = 0;
         let currentX = 0;
         let currentY = linearFunction(0);
-        const month = controlDate.state.value.getMonth();
-        for (let i = 0; i < updateIndex; i++) {
+        while (i <= updateIndex) {
             const isToday = this.isIndexToday(i);
-            const nextX = Math.min(i + 1, maxIndex) * monthDistance;
-            const nextY = linearFunction(nextX);
+
             this.drawCircle(currentX + minX, currentY, COLOR_CATEGORY);
-            this.drawLine(currentX + minX, currentY, nextX + minX, nextY, COLOR_CATEGORY);
             this.drawText(
                 sumValues[i],
                 currentX + minX,
@@ -212,18 +210,21 @@ export default class LineChart extends Component {
                 isToday,
             );
 
+            const isLastIndex = i === updateIndex;
+
+            if (isLastIndex) {
+                break;
+            }
+
+            // draw line
+            const nextX = Math.min(i + 1, maxIndex) * monthDistance;
+            const nextY = linearFunction(nextX);
+            this.drawLine(currentX + minX, currentY, nextX + minX, nextY, COLOR_CATEGORY);
+
             currentX = nextX;
             currentY = nextY;
+            i++;
         }
-
-        this.drawCircle(currentX + minX, currentY, COLOR_CATEGORY);
-        this.drawText(
-            sumValues[updateIndex],
-            currentX + minX,
-            currentY,
-            updateIndex === month ? COLOR_CATEGORY : COLOR_LABEL,
-            updateIndex === month,
-        );
 
         /* Draw Incomplete Line */
         if (this.frame < FRAME_MAX) {
