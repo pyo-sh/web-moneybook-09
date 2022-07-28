@@ -91,9 +91,9 @@ const groupPaymentSumByCategory = () => {
             return historySumMap;
         }, historyMapTemplate);
 
-    const sortedPayment = Object.entries(historyMap)
-        .sort(([keyA, sumA], [keyB, sumB]) => sumA - sumB)
-        .reverse();
+    const sortedPayment = Object.entries(historyMap).sort(
+        ([keyA, sumA], [keyB, sumB]) => sumB - sumA,
+    );
 
     return sortedPayment;
 };
