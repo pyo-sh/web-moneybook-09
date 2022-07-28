@@ -26,6 +26,10 @@ const FRAME_MAX = 140;
 const ROOT_STYLE = getComputedStyle(document.documentElement);
 
 export default class LineChart extends Component {
+    bindState() {
+        return [controlDate.state];
+    }
+
     afterRender() {
         if (!recentSum.state.isLoading) {
             this.init();
@@ -71,6 +75,8 @@ export default class LineChart extends Component {
         const sortedDates = Object.keys(recentSumData).sort();
         const maxSum = Math.max(...Object.values(recentSumData).map(Number));
 
+        this.monthDates = sortedDates.map((date) => date.slice(5));
+
         this.sumPointYs = sortedDates.map((date) => {
             const heightPercent = 1 - recentSumData[date] / maxSum;
             const limitHeight = chartHeight - termY;
@@ -79,6 +85,10 @@ export default class LineChart extends Component {
         });
 
         this.sumValues = sortedDates.map((date) => formatAmount(recentSumData[date]));
+    }
+    isIndexToday(index) {
+        const curDate = parseInt(this.monthDates[index]);
+        return curDate === controlDate.state.value.getMonth() + 1;
     }
 
     setLinearFunction() {
@@ -155,18 +165,16 @@ export default class LineChart extends Component {
 
         const { minX, termX, maxY } = this.measurement;
         const month = controlDate.state.value.getMonth();
-        const months = new Array(12).fill().map((_, i) => (((6 + month + i) % 12) + 1).toString());
+        const months = new Array(12).fill().map((_, i) => (((month + i + 6) % 12) + 1).toString());
 
         const labelHeight = maxY + CANVAS_LABEL_SIZE;
         months.forEach((targetMonth, i) => {
             const curX = i * termX * MONTH_COLUMN;
-            const isToday = i === month;
+            const isToday = this.isIndexToday(i);
             const color = isToday ? COLOR_PRIMARY : COLOR_LABEL;
             this.drawText(targetMonth, minX + curX, labelHeight, color, isToday);
         });
     }
-
-    drawLineByIndex(index) {}
 
     animate() {
         const COLOR_CATEGORY = categories.getCategoryColorById(recentSum.state.category);
@@ -191,10 +199,9 @@ export default class LineChart extends Component {
         let currentY = linearFunction(0);
         const month = controlDate.state.value.getMonth();
         for (let i = 0; i < updateIndex; i++) {
-            const isToday = i === month;
+            const isToday = this.isIndexToday(i);
             const nextX = Math.min(i + 1, maxIndex) * monthDistance;
             const nextY = linearFunction(nextX);
-
             this.drawCircle(currentX + minX, currentY, COLOR_CATEGORY);
             this.drawLine(currentX + minX, currentY, nextX + minX, nextY, COLOR_CATEGORY);
             this.drawText(

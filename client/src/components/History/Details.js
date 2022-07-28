@@ -16,7 +16,7 @@ export default class HistoryDetails extends Component {
         const Details = dates.reduce((doms, date) => {
             const { histories: details, incomeTotal, paidTotal } = groupedHistories[date];
             doms.push(HistoryInfo({ date, incomeTotal, paidTotal, showTotal }));
-            doms.push(...details.map(HistoryItem));
+            doms.push(...details.map((detail) => HistoryItem(detail, showTotal)));
             return doms;
         }, []);
         // prettier-ignore
@@ -46,19 +46,15 @@ const HistoryInfo = ({ date, incomeTotal, paidTotal, showTotal }) => {
     );
 };
 
-const HistoryItem = ({
-    id,
-    category: categoryId,
-    content,
-    paymentMethod: paymentMethodId,
-    amount,
-    isIncome,
-}) => {
+const HistoryItem = (
+    { id, category: categoryId, content, paymentMethod: paymentMethodId, amount, isIncome },
+    showTotal,
+) => {
     const { name: categoryName, color: categoryColor } = categories.state.value[categoryId] ?? {};
     const { name: paymentMethodName } = paymentMethods.state.value[paymentMethodId] ?? {};
 
     // prettier-ignore
-    return li({ class: "item text_body_medium", "data-id": id })(
+    return li({ class: `item text_body_medium${showTotal ? " itemHoverAble" : ""}`, "data-id": id })(
         div({
             style: `background-color: ${categoryColor}`,
             class: "itemCategory text_bold_medium",
