@@ -1,12 +1,15 @@
 import Component from "@core/Component";
 import { section } from "@core/CreateDom";
-import "./Statistic.css";
+import "@pages/Statistic.css";
 import PaymentReport from "@components/PaymentReport";
+import StatisticExpenditure from "@components/Statistic/Expenditures";
 
 export default class Statistic extends Component {
-    getSum() {}
-
     render() {
-        return section({ class: "statisticWrapper" })(new PaymentReport());
+        // prettier-ignore
+        return section({ class: "statistic" })(
+            new PaymentReport(),
+            new StatisticExpenditure(),
+        );
     }
 }
