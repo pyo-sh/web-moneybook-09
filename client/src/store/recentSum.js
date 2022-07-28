@@ -1,7 +1,7 @@
 import { makeObservable, subscribe } from "@core/Observer";
 import { getRecentSumsByCategory } from "@apis/history";
 import { getYearMonth } from "@utils/date";
-import controlDate from "./controlDate";
+import controlDate from "@store/controlDate";
 
 const state = makeObservable({
     value: {},
@@ -13,6 +13,7 @@ function clearData() {
     state.isLoading = true;
     state.value = {};
     state.category = 0;
+    return true;
 }
 subscribe(controlDate.state, clearData);
 

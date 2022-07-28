@@ -35,10 +35,6 @@ export default class LineChart extends Component {
         }
     }
 
-    bindState() {
-        return [recentSum.state];
-    }
-
     init() {
         const { element: chartElement } = this;
 
