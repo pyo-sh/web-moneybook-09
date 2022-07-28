@@ -1,21 +1,31 @@
-import { makeObservable } from "@core/Observer";
+import { makeObservable, subscribe } from "@core/Observer";
 import { getExpendituresByCategory } from "@apis/history";
 import { getYearMonth } from "@utils/date";
+import controlDate from "./controlDate";
 
 const state = makeObservable({
-    value: [],
+    value: {},
+    isLoading: true,
 });
 
+function clearData() {
+    state.isLoading = true;
+    state.value = {};
+    return true;
+}
+subscribe(controlDate.state, clearData);
+
 async function fetchData({ category, date }) {
-    state.value = [];
+    clearData();
 
     const currentDate = new Date(date.replaceAll(".", "-"));
     const dateString = getYearMonth(currentDate);
 
-    const { expenditures } = await getExpendituresByCategory({
+    const { histories } = await getExpendituresByCategory({
         query: { date: dateString, category },
     });
-    state.value = expenditures;
+    state.value = histories;
+    state.isLoading = false;
 }
 
 export default {

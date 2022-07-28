@@ -1,12 +1,16 @@
 import { div, ul, span, li } from "@core/CreateDom";
 import categories from "@store/categories";
+import controlDate from "@store/controlDate";
+import expenditures from "@store/expenditures";
 import recentSum from "@store/recentSum";
-import { formatAmount } from "@utils/format";
+import { formatAmount, formatDate } from "@utils/format";
 
 const StatisticTable = ({ totalExpenditure, historySumList }) => {
     const categorySumList = historySumList.map(([categoryId, sum]) => {
         const onClickCategory = () => {
+            const dateString = controlDate.getFormattedDate();
             recentSum.fetchData({ category: categoryId });
+            expenditures.fetchData({ category: categoryId, date: formatDate(dateString) });
         };
 
         const { name, color } = categories.getCategoryById(categoryId);
