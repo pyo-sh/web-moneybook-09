@@ -3,7 +3,7 @@ import { canvas } from "@core/CreateDom";
 import categories from "@store/categories";
 
 const SPACE_COLOR = "white";
-// const SPACE_COLOR = "black";
+const EMPTY_GRAPH_COLOR = "#F5F5F5";
 
 export default class DoughnutChart extends Component {
     afterRender() {
@@ -36,10 +36,16 @@ export default class DoughnutChart extends Component {
     }
 
     calculateCumulativeRadian() {
-        const { historySumMap, totalExpenditure } = this.props;
+        const { historySumList, totalExpenditure } = this.props;
+
+        if (totalExpenditure <= 0) {
+            this.cumulativeRadianList = [{ categoryId: null, cumulativeRadian: this.maxRadian }];
+            return;
+        }
+
         let prevRadian = 0;
 
-        const cumulativeRadianMap = Object.entries(historySumMap).map(([categoryId, subTotal]) => {
+        const cumulativeRadianMap = historySumList.map(([categoryId, subTotal]) => {
             const cumulativeRadian = (subTotal / totalExpenditure) * this.maxRadian + prevRadian;
             prevRadian = cumulativeRadian;
             return { categoryId, cumulativeRadian };
@@ -78,6 +84,9 @@ export default class DoughnutChart extends Component {
 
     getCurrentColor() {
         const { categoryId, cumulativeRadian } = this.cumulativeRadianList[this.cumulativeIndex];
+        if (!categoryId) {
+            return EMPTY_GRAPH_COLOR;
+        }
 
         if (this.currentRadian > cumulativeRadian) {
             this.cumulativeIndex += 1;
@@ -90,19 +99,13 @@ export default class DoughnutChart extends Component {
     }
 
     draw() {
-        // 만약 현재 radian이 cumulativeRadian보다 크다면 index를 바꾼다.
-        // update된 값이 cumurativeRadian보다 작다면
-        // 맥스지칭
         this.cumulativeRadianList.forEach(() => {});
 
-        // let currentRadian = this.currentRadian;
         let updatedRadian = this.updatedRadian;
 
         while (this.cumulativeIndex < this.cumulativeRadianList.length) {
-            // cumulativeIndex의 범위보다 작은지 확인한다.그러면 그냥 랜더링 한다.
-            const { categoryId, cumulativeRadian } =
-                this.cumulativeRadianList[this.cumulativeIndex];
-            const color = categories.getCategoryColorById(categoryId);
+            const { cumulativeRadian } = this.cumulativeRadianList[this.cumulativeIndex];
+            const color = this.getCurrentColor();
             if (updatedRadian <= cumulativeRadian) {
                 this.drawPieSlice(
                     this.radius,
@@ -114,7 +117,6 @@ export default class DoughnutChart extends Component {
             }
 
             if (updatedRadian > cumulativeRadian) {
-                // 다음을 본다.
                 this.drawPieSlice(
                     this.radius,
                     this.currentRadian - this.reconciliationValue,
@@ -123,25 +125,9 @@ export default class DoughnutChart extends Component {
                 );
                 this.cumulativeIndex++;
                 this.currentRadian = cumulativeRadian;
-                // const { categoryId,cumulativeRadian } = this.cumulativeRadianList[this.cumulativeIndex];
-                // const color = categories.getCategoryColorById(categoryId)
             }
         }
 
-        // const { cumulativeRadian } = this.cumulativeRadianList[this.cumulativeIndex];
-
-        // if (this.currentRadian > cumulativeRadian) {
-        //     this.cumulativeIndex += 1;
-        // }
-
-        // // draw pie
-        // this.drawPieSlice(
-        //     this.radius,
-        //     this.currentRadian - this.reconciliationValue,
-        //     this.updatedRadian,
-        //     this.color,
-        // );
-        // draw hole
         this.drawPieSlice(this.radius / 2, 0, this.maxRadian, SPACE_COLOR);
     }
 
