@@ -164,7 +164,7 @@ export default class LineChart extends Component {
     }
 
     drawMonthsText() {
-        const COLOR_PRIMARY = ROOT_STYLE.getPropertyValue("--color-Primary");
+        const COLOR_CATEGORY = categories.getCategoryColorById(recentSum.state.category);
         const COLOR_LABEL = ROOT_STYLE.getPropertyValue("--color-Label");
 
         const { minX, termX, maxY } = this.measurement;
@@ -175,7 +175,7 @@ export default class LineChart extends Component {
         months.forEach((targetMonth, i) => {
             const curX = i * termX * MONTH_COLUMN;
             const isToday = this.isIndexToday(i);
-            const color = isToday ? COLOR_PRIMARY : COLOR_LABEL;
+            const color = isToday ? COLOR_CATEGORY : COLOR_LABEL;
             this.drawText(targetMonth, minX + curX, labelHeight, color, isToday);
         });
     }
