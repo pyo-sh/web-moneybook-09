@@ -35,8 +35,9 @@ const getFilteredHistories = ({ isIncomeSelected, isPaidSelected }) => {
 const getTotals = () => {
     return state.details.reduce(
         ([inTotal, outTotal], { isIncome, amount }) => {
-            const income = isIncome ? amount : 0;
-            const paid = isIncome ? 0 : amount;
+            const numberAmount = Number(amount);
+            const income = isIncome ? numberAmount : 0;
+            const paid = isIncome ? 0 : numberAmount;
             return [inTotal + income, outTotal + paid];
         },
         [0, 0],

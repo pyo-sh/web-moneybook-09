@@ -23,6 +23,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: Path.join(clientPath, "/index.html"),
+            favicon: Path.join(clientPath, "/favicon.ico"),
         }),
     ],
     resolve: {
