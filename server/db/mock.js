@@ -68,7 +68,7 @@ const PAYMENT_METHODS = [
 ];
 
 function createHistories() {
-    const COUNTS = 3000;
+    const COUNTS = 240;
     const result = Array.from(new Array(COUNTS), (_, i) => {
         const mockMonth = Math.floor(Math.random() * 12 + 1)
             .toString()
@@ -88,10 +88,10 @@ function createHistories() {
                 .toString()
                 .padStart(2, "0")}
             `,
-            content: `history-${i.toString().padStart(4, "0")}`,
+            content: `저는 ${i.toString().padStart(4, "0")}번째 내용입니다~`,
             category: mockCategoryId + 1,
             isIncome: CATEGORIES[mockCategoryId].isIncome,
-            amount: Math.floor(Math.random() * 3000000),
+            amount: Math.floor(Math.random() * 150000),
             paymentMethod: mockPaymentMethodId + 1,
         };
     });
