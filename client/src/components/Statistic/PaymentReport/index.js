@@ -1,6 +1,6 @@
 import Component from "@core/Component";
 import { div } from "@core/CreateDom";
-import "@components/statistic/paymentReport/index.css";
+import "@components/Statistic/PaymentReport/index.css";
 import DoughnutChart from "@components/Statistic/DoughnutChart";
 import histories from "@store/histories";
 import StatisticTable from "./StatisticTable";
