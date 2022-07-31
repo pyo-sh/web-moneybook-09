@@ -14,6 +14,7 @@ module.exports = merge(common, {
     },
 
     devServer: {
+        historyApiFallback: true,
         client: {
             logging: "error",
             overlay: true,

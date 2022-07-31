@@ -47,7 +47,9 @@ const proxyCreateDom = new Proxy(
     {
         get(target, property) {
             property = property.toLowerCase();
-            if (property in target) return Reflect.get(...arguments);
+            if (property in target) {
+                return Reflect.get(...arguments);
+            }
 
             Reflect.set(target, property, createDom(property));
             return Reflect.get(...arguments);
@@ -103,6 +105,11 @@ export const {
     footer,
     form,
     h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
     head,
     header,
     hr,
@@ -115,6 +122,7 @@ export const {
     kbd,
     label,
     legend,
+    lh,
     li,
     link,
     main,
