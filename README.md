@@ -1,13 +1,12 @@
 <div align="center">
   <a href="https://github.com/woowa-techcamp-2022/web-moneybook-09">
-    <img src="https://user-images.githubusercontent.com/55688122/179215743-a3520878-4f63-4f10-a119-0ad5e3d38071.png" alt="Logo" width="120" height="120">
+    <img src="https://user-images.githubusercontent.com/78121870/182010905-284cf433-a58f-439f-b70f-ff2052db2b85.png" alt="Logo">
   </a>
 
-  <h2 align="center">WEB-MONEYBOOK-09</h2>
-  <h3 align="center">MONEY-BOOK</h3>
+
 
   <p align="center">
-    할 일을 서버에 저장하고 다시 가져와 정리할 수 있는 리스트
+    수입과 지출을 관리하는  웹용 가계부
     <br />
     <a href="https://chrome-submarine-cd8.notion.site/TO-DO-LIST-538d7f9110cc414087668e675a10b257">
       <strong>  
