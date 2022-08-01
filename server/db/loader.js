@@ -5,8 +5,9 @@ const checkPaymentMethodTable = require("./checkTable/paymentMethod");
 const checkCategoryTable = require("./checkTable/category");
 
 const pool = mysql.createPool({
+    connectionLimit: 20,
     host: DB_HOST,
-    port: DB_PORT,
+    port: DB_PORT || 3306,
     user: DB_USER,
     password: DB_PASSWORD,
     database: DB_NAME,

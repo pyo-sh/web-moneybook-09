@@ -1,5 +1,7 @@
-const { protocol, hostname } = window.location;
-const BASE_URL = `${protocol}//${hostname}:${3000}/api`;
+const { protocol, hostname, port } = window.location;
+const isProduction = process.env.NODE_ENV == "production";
+const urlPort = port ? `:${port}` : "";
+const BASE_URL = `${protocol}//${hostname}${isProduction ? urlPort : ":3000"}/api`;
 
 const customFetch =
     (method) =>

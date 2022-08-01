@@ -2,7 +2,9 @@
     "name": "web-moneybook-09",
     "version": "0.0.0",
     "private": true,
+    "main": "./server/bin/www",
     "scripts": {
+        "start": "node ./server/bin/www",
         "server:start": "node ./server/bin/www",
         "server:dev": "nodemon ./server/bin/www",
         "build": "cross-env NODE_ENV=production webpack --config client/webpack/webpack.config.prod.js",
