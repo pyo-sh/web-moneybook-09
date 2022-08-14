@@ -67,7 +67,7 @@ const PAYMENT_METHODS = [
     },
 ];
 
-function createHistories() {
+function createHistories(categories, paymentMethods) {
     const COUNTS = 240;
     const result = Array.from(new Array(COUNTS), (_, i) => {
         const mockMonth = Math.floor(Math.random() * 12 + 1)
@@ -78,8 +78,10 @@ function createHistories() {
             .padStart(2, "0");
         const mockDate = new Date(`2022-${mockMonth}-${mockDay}`);
 
-        const mockCategoryId = Math.floor(Math.random() * CATEGORIES.length);
-        const mockPaymentMethodId = Math.floor(Math.random() * PAYMENT_METHODS.length);
+        const mockCategoryIndex = Math.floor(Math.random() * categories.length);
+        const mockPaymentMethodIndex = Math.floor(Math.random() * paymentMethods.length);
+        const mockCategoryId = categories[mockCategoryIndex].id;
+        const mockPaymentMethodId = paymentMethods[mockPaymentMethodIndex].id;
 
         return {
             date: `
@@ -89,10 +91,10 @@ function createHistories() {
                 .padStart(2, "0")}
             `,
             content: `저는 ${i.toString().padStart(4, "0")}번째 내용입니다~`,
-            category: mockCategoryId + 1,
-            isIncome: CATEGORIES[mockCategoryId].isIncome,
+            category: mockCategoryId,
+            isIncome: CATEGORIES[mockCategoryIndex].isIncome,
             amount: Math.floor(Math.random() * 150000),
-            paymentMethod: mockPaymentMethodId + 1,
+            paymentMethod: mockPaymentMethodId,
         };
     });
     return result;
@@ -117,17 +119,19 @@ module.exports = {
     },
     insertMock: async () => {
         try {
-            await Object.values(CATEGORIES).reduce((acc, object) => {
-                return acc.then(() => CategoryService.addCategory(object));
-            }, new Promise((resolve) => resolve(1)));
+            const categories = await Promise.all(
+                Object.values(CATEGORIES).map((object) => CategoryService.addCategory(object)),
+            );
             console.log("All Categories Inserted");
 
-            await Object.values(PAYMENT_METHODS).reduce((acc, object) => {
-                return acc.then(() => PaymentMethodService.addPaymentMethod(object));
-            }, new Promise((resolve) => resolve(2)));
+            const paymentMethods = await Promise.all(
+                Object.values(PAYMENT_METHODS).map((object) =>
+                    PaymentMethodService.addPaymentMethod(object),
+                ),
+            );
             console.log("All PaymentMethods Inserted");
 
-            const HISTORIES = createHistories();
+            const HISTORIES = createHistories(categories, paymentMethods);
             await Object.values(HISTORIES).reduce((acc, object) => {
                 return acc.then(() => HistoryService.addHistory(object));
             }, new Promise((resolve) => resolve(3)));
